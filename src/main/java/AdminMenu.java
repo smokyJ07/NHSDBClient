@@ -5,6 +5,10 @@ import java.awt.event.ActionListener;
 
 public class AdminMenu extends JFrame {
     private JButton backButton;
+    private JTabbedPane tabbedPane;
+    private JPanel medicalCentrePanel;
+    private JPanel patientPanel;
+    private JPanel gpPanel;
 
     public AdminMenu(){
         //initialize frame
@@ -24,6 +28,18 @@ public class AdminMenu extends JFrame {
             }
         });
         this.getContentPane().add(backButton);
+
+        //tabbed pane with all the actions
+        tabbedPane = new JTabbedPane();
+        //three panes on the tabbed pane for adding either medical centres,
+        //GPs or patients
+        medicalCentrePanel = new JPanel();
+        patientPanel = new JPanel();
+        gpPanel = new JPanel();
+        tabbedPane.addTab("New Medical Centre", medicalCentrePanel);
+        tabbedPane.addTab("New Patient", patientPanel);
+        tabbedPane.addTab("New GP", gpPanel);
+        this.getContentPane().add(tabbedPane);
 
         this.setVisible(true);
 
