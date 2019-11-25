@@ -60,13 +60,14 @@ public class MainMenu extends JFrame {
         quitButton = new JButton("Quit");
         quitButton.addActionListener((event) -> System.exit(0));
 
-        createLayout(gpButton, adminButton, usernameField, passwordLabel, passwordField,
-                loginButton, message, quitButton);
+        createLayout(usernameLabel, usernameField, passwordLabel, passwordField, adminButton,
+                gpButton, loginButton, message, quitButton);
+
         this.setVisible(true);
     }
 
+    //custom action handler for login button pressed
     private class SubmitAction extends AbstractAction{
-
         @Override
         public void actionPerformed(ActionEvent e){
             doSubmit();
@@ -112,41 +113,24 @@ public class MainMenu extends JFrame {
             }
             return 0;
         }
-
     }
 
+    //method that handles complete layout of components
     private void createLayout(JComponent... arg){
         JPanel pane = new JPanel();
-        GroupLayout gl = new GroupLayout(pane);
+        GridLayout gl = new GridLayout(5, 2);
 
-        gl.setAutoCreateContainerGaps(true);
+        pane.setLayout(gl);
+        pane.add(arg[0]);
+        pane.add(arg[1]);
+        pane.add(arg[2]);
+        pane.add(arg[3]);
+        pane.add(arg[4]);
+        pane.add(arg[5]);
+        pane.add(arg[6]);
+        pane.add(arg[7]);
+        pane.add(arg[8]);
 
-        gl.setHorizontalGroup(
-                gl.createParallelGroup()
-                        .addComponent(arg[0])
-                        .addComponent(arg[1])
-                        .addComponent(arg[2])
-                        .addComponent(arg[3])
-                        .addComponent(arg[4])
-                        .addComponent(arg[5])
-                        .addComponent(arg[6])
-                        .addComponent(arg[7])
-        );
-
-        gl.setVerticalGroup(
-                gl.createSequentialGroup()
-                    .addComponent(arg[0])
-                    .addPreferredGap(RELATED)
-                    .addComponent(arg[1])
-                    .addPreferredGap(RELATED)
-                    .addComponent(arg[2])
-                    .addComponent(arg[3])
-                    .addComponent(arg[4])
-                    .addComponent(arg[5])
-                    .addComponent(arg[6])
-                    .addComponent(arg[7])
-        );
         this.getContentPane().add(pane);
-
     }
 }
