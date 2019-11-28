@@ -1,19 +1,28 @@
+package menus;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import clientClasses.Request;
+import com.google.gson.Gson;
+import objects.Patient;
+import clientClasses.Request;
+
 public class AdminMenu extends JFrame {
     private JMenuBar menuBar;
     private JTabbedPane tabbedPane;
     private JPanel medicalCentrePanel;
-    private JPanel patientPanel;
     private JPanel gpPanel;
+    private JPanel patientPanel;
+
+    private Patient p;
 
     public AdminMenu(){
         //initialize frame
         this.setTitle("Admin Menu");
-        this.setSize(600, 500);
+        this.setSize(400, 200);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -59,10 +68,59 @@ public class AdminMenu extends JFrame {
         //three panes on the tabbed pane for adding either medical centres,
         //GPs or patients
         medicalCentrePanel = new JPanel();
+
         patientPanel = new JPanel();
+        setupPatientPanel();
+
         gpPanel = new JPanel();
+
         tabbedPane.addTab("New Medical Centre", medicalCentrePanel);
         tabbedPane.addTab("New Patient", patientPanel);
         tabbedPane.addTab("New GP", gpPanel);
     }
+
+    private void setupPatientPanel(){
+        patientPanel.setLayout(new GridLayout(4, 2));
+
+        patientPanel.add(new JLabel("First name: "));
+        JTextField firstNameField = new JTextField(15);
+        patientPanel.add(firstNameField);
+
+        patientPanel.add(new JLabel("Last name: "));
+        JTextField lastNameField = new JTextField(15);
+        patientPanel.add(lastNameField);
+
+        patientPanel.add(new JLabel("Phone number: "));
+        JTextField phoneNumField = new JTextField(15);
+        patientPanel.add(phoneNumField);
+
+        //submit button
+        JButton submitButton = new JButton("Submit");
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+
+                //get info from the text fields when button clicked and save in patient class
+                String firstName = firstNameField.getText();
+                firstNameField.setText("");
+                String lastName = lastNameField.getText();
+                lastNameField.setText("");
+                String phoneNum = phoneNumField.getText();
+                phoneNumField.setText("");
+                p = new Patient(firstName,lastName,phoneNum);
+
+                //convert patient to Json String and send to servlet
+                String patient_json_string = p.getJsonString();
+                Request post = new Request();
+                post.makePostRequest(patient_json_string);
+
+            }
+        });
+        patientPanel.add(submitButton);
+
+    }
+
+
+
+
 }
