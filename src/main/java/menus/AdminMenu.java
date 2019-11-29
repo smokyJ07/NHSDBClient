@@ -5,10 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import clientClasses.CustomJson;
 import clientClasses.Request;
-import com.google.gson.Gson;
-import objects.Patient;
+import jdk.tools.jaotc.collect.jar.JarSourceProvider;
 import clientClasses.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class AdminMenu extends JFrame {
     private JMenuBar menuBar;
@@ -16,8 +18,6 @@ public class AdminMenu extends JFrame {
     private JPanel medicalCentrePanel;
     private JPanel gpPanel;
     private JPanel patientPanel;
-
-    private Patient p;
 
     public AdminMenu(){
         //initialize frame
@@ -107,12 +107,29 @@ public class AdminMenu extends JFrame {
                 lastNameField.setText("");
                 String phoneNum = phoneNumField.getText();
                 phoneNumField.setText("");
-                p = new Patient(firstName,lastName,phoneNum);
+                //p = new Patient(firstName,lastName,phoneNum);
 
-                //convert patient to Json String and send to servlet
-                String patient_json_string = p.getJsonString();
+                //create instruction json object containing data and function to execute by server
+                JSONObject patient = new JSONObject();
+                try {
+                    patient.put("firstName", firstName);
+                    patient.put("lastName", lastName);
+                    patient.put("phoneNum", phoneNum);
+                } catch(JSONException e){
+                    System.out.println("error during patient json creation");
+                }
+
+                JSONObject data = new JSONObject();
+                try{
+                    data.put("patient", patient);
+                }catch(JSONException e){
+                    System.out.println("Error during json data body creation");
+                }
+
+                CustomJson instruction = new CustomJson("addPatient", data);
+                String instruction_json_string = instruction.toString();
                 Request post = new Request();
-                post.makePostRequest(patient_json_string);
+                post.makePostRequest(instruction_json_string);
 
             }
         });

@@ -1,8 +1,5 @@
 package clientClasses;
 
-import com.google.gson.Gson;
-import objects.Patient;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -39,7 +36,7 @@ public class Request {
             System.out.println(jsonString);
             // Set up the body data
             byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
-            URL myURL = new URL("http://localhost:8080/FirstServlet/patients");
+            URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
             HttpURLConnection conn = null;
             conn = (HttpURLConnection) myURL.openConnection();
             // Set up the header
