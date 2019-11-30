@@ -1,3 +1,7 @@
+import adminActions.addGP;
+import adminActions.addMedicalCentre;
+import adminActions.addPatient;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -58,9 +62,10 @@ public class AdminMenu extends JFrame {
         tabbedPane = new JTabbedPane();
         //three panes on the tabbed pane for adding either medical centres,
         //GPs or patients
-        medicalCentrePanel = new JPanel();
-        patientPanel = new JPanel();
-        gpPanel = new JPanel();
+        medicalCentrePanel = new addMedicalCentre();  //Here we can add the new classes that extend from JPanel
+        patientPanel = new addPatient();
+        //gpPanel = new JPanel();   original code
+        gpPanel = new addGP();      //new code
         tabbedPane.addTab("New Medical Centre", medicalCentrePanel);
         tabbedPane.addTab("New Patient", patientPanel);
         tabbedPane.addTab("New GP", gpPanel);
