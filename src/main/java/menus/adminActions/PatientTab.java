@@ -1,4 +1,9 @@
-package adminActions;
+package menus.adminActions;
+
+import clientClasses.CustomJson;
+import clientClasses.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -22,7 +27,7 @@ import java.util.Map;
 //For now, display list shows a concatenation of first and last name and outputs in the JLabel the GP name and phone number
 
 
-public class addPatient extends JPanel {
+public class PatientTab extends JPanel {
 
     //Information to collect
     private Map map = new HashMap();
@@ -50,7 +55,7 @@ public class addPatient extends JPanel {
     private String fullName = new String();
     private String otherInfo = new String();
 
-    public addPatient() {
+    public PatientTab() {
 
         //Initialising JLabels
         firstNameLabel = new JLabel("Please enter the patient's first name:");
@@ -86,6 +91,28 @@ public class addPatient extends JPanel {
                 lastNameInput.setText("");
                 numberInput.setText("");
                 GPInput.setText("");
+
+                //create instruction json object containing data and function to execute by server
+                JSONObject patient = new JSONObject();
+                try {
+                    patient.put("firstName", patientFirstName);
+                    patient.put("lastName", patientLastName);
+                    patient.put("phoneNum", patientNumber);
+                } catch(JSONException e){
+                    System.out.println("error during patient json creation");
+                }
+
+                JSONObject data = new JSONObject();
+                try{
+                    data.put("patient", patient);
+                }catch(JSONException e){
+                    System.out.println("Error during json data body creation");
+                }
+
+                CustomJson instruction = new CustomJson("addPatient", data);
+                String instruction_json_string = instruction.toString();
+                Request post = new Request();
+                post.makePostRequest(instruction_json_string);
             }
         });
 

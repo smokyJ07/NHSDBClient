@@ -1,28 +1,23 @@
 package menus;
 
+import menus.adminActions.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import clientClasses.CustomJson;
-import clientClasses.Request;
-import jdk.tools.jaotc.collect.jar.JarSourceProvider;
-import clientClasses.Request;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class AdminMenu extends JFrame {
     private JMenuBar menuBar;
     private JTabbedPane tabbedPane;
     private JPanel medicalCentrePanel;
-    private JPanel gpPanel;
     private JPanel patientPanel;
+    private JPanel gpPanel;
 
     public AdminMenu(){
         //initialize frame
         this.setTitle("Admin Menu");
-        this.setSize(400, 200);
+        this.setSize(600, 500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -67,77 +62,12 @@ public class AdminMenu extends JFrame {
         tabbedPane = new JTabbedPane();
         //three panes on the tabbed pane for adding either medical centres,
         //GPs or patients
-        medicalCentrePanel = new JPanel();
-
-        patientPanel = new JPanel();
-        setupPatientPanel();
-
-        gpPanel = new JPanel();
-
+        medicalCentrePanel = new MedicalCentreTab();  //Here we can add the new classes that extend from JPanel
+        patientPanel = new PatientTab();
+        //gpPanel = new JPanel();   original code
+        gpPanel = new GPTab();      //new code
         tabbedPane.addTab("New Medical Centre", medicalCentrePanel);
         tabbedPane.addTab("New Patient", patientPanel);
         tabbedPane.addTab("New GP", gpPanel);
     }
-
-    private void setupPatientPanel(){
-        patientPanel.setLayout(new GridLayout(4, 2));
-
-        patientPanel.add(new JLabel("First name: "));
-        JTextField firstNameField = new JTextField(15);
-        patientPanel.add(firstNameField);
-
-        patientPanel.add(new JLabel("Last name: "));
-        JTextField lastNameField = new JTextField(15);
-        patientPanel.add(lastNameField);
-
-        patientPanel.add(new JLabel("Phone number: "));
-        JTextField phoneNumField = new JTextField(15);
-        patientPanel.add(phoneNumField);
-
-        //submit button
-        JButton submitButton = new JButton("Submit");
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-
-                //get info from the text fields when button clicked and save in patient class
-                String firstName = firstNameField.getText();
-                firstNameField.setText("");
-                String lastName = lastNameField.getText();
-                lastNameField.setText("");
-                String phoneNum = phoneNumField.getText();
-                phoneNumField.setText("");
-                //p = new Patient(firstName,lastName,phoneNum);
-
-                //create instruction json object containing data and function to execute by server
-                JSONObject patient = new JSONObject();
-                try {
-                    patient.put("firstName", firstName);
-                    patient.put("lastName", lastName);
-                    patient.put("phoneNum", phoneNum);
-                } catch(JSONException e){
-                    System.out.println("error during patient json creation");
-                }
-
-                JSONObject data = new JSONObject();
-                try{
-                    data.put("patient", patient);
-                }catch(JSONException e){
-                    System.out.println("Error during json data body creation");
-                }
-
-                CustomJson instruction = new CustomJson("addPatient", data);
-                String instruction_json_string = instruction.toString();
-                Request post = new Request();
-                post.makePostRequest(instruction_json_string);
-
-            }
-        });
-        patientPanel.add(submitButton);
-
-    }
-
-
-
-
 }

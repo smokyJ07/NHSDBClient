@@ -1,4 +1,4 @@
-package adminActions;
+package menus.adminActions;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -17,7 +17,7 @@ import java.util.Map;
  * correctly. It includes a CreateMCList function in order for the display to work properly as well as a setting layout function  */
 
 
-public class addMedicalCentre extends JPanel {
+public class MedicalCentreTab extends JPanel {
 
     //Information to collect
     private Map<String, String> map = new HashMap<String, String>();    //will map medical centre as keys to an address
@@ -34,7 +34,7 @@ public class addMedicalCentre extends JPanel {
     private JList<String> MCList = new JList<String>();
     private JLabel addressMC = new JLabel();
 
-    public addMedicalCentre() {
+    public MedicalCentreTab() {
 
         //Initialising JLabels
         MCNameLabel = new JLabel("Please enter the name of the medical centre:");

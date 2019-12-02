@@ -1,8 +1,5 @@
 package menus;
 
-import menus.AdminMenu;
-import menus.GPMenu;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

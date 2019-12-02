@@ -1,4 +1,4 @@
-package adminActions;
+package menus.adminActions;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 
 
-public class addGP extends JPanel {
+public class GPTab extends JPanel {
 
     //Information to collect
     private Map<String, String> map = new HashMap<String, String>();    //will map GP as keys to a medical centre
@@ -35,7 +35,7 @@ public class addGP extends JPanel {
     private JList<String> GPList = new JList<String>();
     private JLabel medicalCentreGP = new JLabel();
 
-    public addGP() {
+    public GPTab() {
 
         //Adding fake medical centres for now
         String[] medicalCentres =  {"Roehampton","Kensington and Chelsea", "Chelsea and Westminster", "Teddington"};
