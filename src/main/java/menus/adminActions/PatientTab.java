@@ -35,16 +35,25 @@ public class PatientTab extends JPanel {
     private String patientLastName = new String();
     private String patientNumber = new String();
     private String GPName = new String();
+    private String patientAddress;
+    private String patientEmail;
+    private String patientDob;
     //Labels
     private JLabel firstNameLabel;
     private JLabel lastNameLabel;
     private JLabel GPLabel;
-    private JLabel numberLabel;
+    private JLabel phoneNumberLabel;
+    private JLabel emailLabel;
+    private JLabel dobLabel;
+    private JLabel addressLabel;
     //Inputs
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JTextField GPInput;
-    private JTextField numberInput;
+    private JTextField phoneNumberInput;
+    private JTextField emailInput;
+    private JTextField dobInput;
+    private JTextField addressInput;
     private JButton submit = new JButton("Submit");
     //Output GP list added
     private DefaultListModel<String> patientAdded = new DefaultListModel<String>();
@@ -60,14 +69,20 @@ public class PatientTab extends JPanel {
         //Initialising JLabels
         firstNameLabel = new JLabel("Please enter the patient's first name:");
         lastNameLabel = new JLabel("Please enter the patient's last name:");
-        numberLabel = new JLabel("Please enter the patient's mobile phone number:");
+        phoneNumberLabel = new JLabel("Please enter the patient's mobile phone number:");
         GPLabel = new JLabel("Please enter the full name of the patient's GP:");
+        emailLabel = new JLabel("Please enter the patient's email:");
+        dobLabel = new JLabel("Please enter the patient's date of birth:");
+        addressLabel = new JLabel("Please enter the patients address:");
 
         //Initialising relevant text field
         firstNameInput = new JTextField(30);
         lastNameInput = new JTextField(30);
-        numberInput = new JTextField(30);
+        phoneNumberInput = new JTextField(30);
         GPInput = new JTextField(30);
+        emailInput = new JTextField(30);
+        dobInput = new JTextField(30);
+        addressInput = new JTextField(30);
 
 
         //Adding ActionListeners to button
@@ -77,20 +92,26 @@ public class PatientTab extends JPanel {
                 //Adding input to database
                 patientFirstName = firstNameInput.getText();
                 patientLastName = lastNameInput.getText();
-                patientNumber = numberInput.getText();
+                patientNumber = phoneNumberInput.getText();
                 GPName = GPInput.getText();
+                patientAddress = addressInput.getText();
+                patientDob = dobInput.getText();
+                patientEmail = emailInput.getText();
 
                 //Adding input data to Map
                 fullName = (firstNameInput.getText() + " " + lastNameInput.getText());
-                otherInfo  = (numberInput.getText() + ", " + GPInput.getText());
+                otherInfo  = (phoneNumberInput.getText() + ", " + GPInput.getText());
                 map.put(fullName, otherInfo);
                 patientAdded.addElement(fullName);
 
                 //Resetting the text field
                 firstNameInput.setText("");
                 lastNameInput.setText("");
-                numberInput.setText("");
+                phoneNumberInput.setText("");
                 GPInput.setText("");
+                addressInput.setText("");
+                emailInput.setText("");
+                dobInput.setText("");
 
                 //create instruction json object containing data and function to execute by server
                 JSONObject patient = new JSONObject();
@@ -98,18 +119,14 @@ public class PatientTab extends JPanel {
                     patient.put("firstName", patientFirstName);
                     patient.put("lastName", patientLastName);
                     patient.put("phoneNum", patientNumber);
+                    patient.put("address", patientAddress);
+                    patient.put("email", patientEmail);
+                    patient.put("dob", patientDob);
                 } catch(JSONException e){
                     System.out.println("error during patient json creation");
                 }
 
-                JSONObject data = new JSONObject();
-                try{
-                    data.put("patient", patient);
-                }catch(JSONException e){
-                    System.out.println("Error during json data body creation");
-                }
-
-                CustomJson instruction = new CustomJson("addPatient", data);
+                CustomJson instruction = new CustomJson("addPatient", patient);
                 String instruction_json_string = instruction.toString();
                 Request post = new Request();
                 post.makePostRequest(instruction_json_string);
@@ -146,8 +163,14 @@ public class PatientTab extends JPanel {
         firstPane.add(firstNameInput);
         firstPane.add(lastNameLabel);
         firstPane.add(lastNameInput);
-        firstPane.add(numberLabel);
-        firstPane.add(numberInput);
+        firstPane.add(dobLabel);
+        firstPane.add(dobInput);
+        firstPane.add(addressLabel);
+        firstPane.add(addressInput);
+        firstPane.add(phoneNumberLabel);
+        firstPane.add(phoneNumberInput);
+        firstPane.add(emailLabel);
+        firstPane.add(emailInput);
         firstPane.add(GPLabel);
         firstPane.add(GPInput);
 

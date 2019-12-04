@@ -1,5 +1,10 @@
 package menus.adminActions;
 
+import clientClasses.CustomJson;
+import clientClasses.Request;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,7 +25,7 @@ import java.util.Map;
 public class MedicalCentreTab extends JPanel {
 
     //Information to collect
-    private Map<String, String> map = new HashMap<String, String>();    //will map medical centre as keys to an address
+    private Map<String, String> mcMap = new HashMap<String, String>();    //will map medical centre keys to data
     //Labels
     private JLabel MCNameLabel;
     private JLabel addressLabel;
@@ -49,10 +54,24 @@ public class MedicalCentreTab extends JPanel {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 //Adding input data to Map and resetting the text field
-                map.put(inputMC.getText(), inputAddress.getText());
+                String mcName = inputMC.getText();
+                String mcAddress = inputAddress.getText();
+                mcMap.put("name", mcName);
+                mcMap.put("address", mcAddress);
+
                 MCAdded.addElement(inputMC.getText());
                 inputMC.setText("");    //Resets textfield so that user knows it's submitted
                 inputAddress.setText("");
+
+                //create JSON and send it
+                JSONObject mc = new JSONObject(mcMap);
+                System.out.println(mc.toString());
+
+                CustomJson instruction = new CustomJson("addMC", mc);
+                String instructionString = instruction.toString();
+                Request post = new Request();
+                post.makePostRequest(instructionString);
+
             }
         });
 
@@ -70,7 +89,7 @@ public class MedicalCentreTab extends JPanel {
         MCList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                String medicalCentreChosen = map.get(MCList.getSelectedValue());
+                String medicalCentreChosen = mcMap.get(MCList.getSelectedValue());
                 addressMC.setText(medicalCentreChosen);    //Outputs medical centre of selected GP
             }
         });

@@ -36,7 +36,7 @@ public class Request {
             System.out.println(jsonString);
             // Set up the body data
             byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
-            URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
+            URL myURL = new URL("http://localhost:8080/NHSDBServlet/patients");
             HttpURLConnection conn = null;
             conn = (HttpURLConnection) myURL.openConnection();
             // Set up the header
@@ -61,6 +61,7 @@ public class Request {
         }
         catch (Exception e) {
             System.out.println("Something went wrong with the connection!");
+            e.printStackTrace();
         }
     }
 }
