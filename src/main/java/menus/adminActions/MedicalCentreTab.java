@@ -33,6 +33,8 @@ public class MedicalCentreTab extends JPanel {
     private JTextField inputMC;
     private JButton submit = new JButton("Submit");
     private JTextField inputAddress;
+    //Adding message showing the success of adding an item to the database successfully
+    private JLabel successMessage = new JLabel ("Medical centre added successfully!");
     //Output Medical Centre list added
     private DefaultListModel<String> MCAdded = new DefaultListModel<String>();
     private JScrollPane outspane = new JScrollPane();
@@ -42,12 +44,16 @@ public class MedicalCentreTab extends JPanel {
     public MedicalCentreTab() {
 
         //Initialising JLabels
-        MCNameLabel = new JLabel("Please enter the name of the medical centre:");
-        addressLabel = new JLabel("Please enter the address of the medical centre:");
+        MCNameLabel = new JLabel("Name:");
+        addressLabel = new JLabel("Address:");
 
         //Initialising GP_name text field
         inputMC = new JTextField(30);
         inputAddress = new JTextField(30);
+
+        //Setting success message to be invisible
+        successMessage.setForeground(Color.green);
+        successMessage.setVisible(false);
 
         //Adding ActionListeners to button
         submit.addActionListener(new ActionListener() {
@@ -62,6 +68,9 @@ public class MedicalCentreTab extends JPanel {
                 MCAdded.addElement(inputMC.getText());
                 inputMC.setText("");    //Resets textfield so that user knows it's submitted
                 inputAddress.setText("");
+
+                //Setting the success message to be visible after submission!
+                successMessage.setVisible(true);
 
                 //create JSON and send it
                 JSONObject mc = new JSONObject(mcMap);
@@ -80,7 +89,7 @@ public class MedicalCentreTab extends JPanel {
         createMCList();
 
         //Function that sets layout appropriately
-        settingLayout();
+        settingAbsLayout();
 
     }
 
@@ -97,27 +106,41 @@ public class MedicalCentreTab extends JPanel {
 
     }
 
-    public void settingLayout(){
-        //Adding the textfield input, list and their labels as one flow panel
-        JPanel firstPane = new JPanel(new FlowLayout()); //first panel will allow default grid
-        firstPane.add(MCNameLabel);
-        firstPane.add(inputMC);
-        firstPane.add(addressLabel);
-        firstPane.add(inputAddress);
+    public void settingAbsLayout(){
+        //Adding all different layouts via an absolute layout
+        this.setLayout(null);   //size is (600, 500)
 
-        //Adding submit button and GP info display
-        JPanel secondPane = new JPanel(new FlowLayout());
-        secondPane.add(submit);
-        secondPane.add(outspane);
-        secondPane.add(addressMC);
+        //Dimensions of each element
+        Dimension MCNameLabelDim = MCNameLabel.getPreferredSize();
+        Dimension inputMCDim = inputMC.getPreferredSize();
+        Dimension addressLabelDim = addressLabel.getPreferredSize();
+        Dimension inputAddressDim = inputAddress.getPreferredSize();
+        Dimension submitDim = submit.getPreferredSize();
+        Dimension successMessageDim = successMessage.getPreferredSize();
+//        Dimension outspaneDim = outspane.getPreferredSize();
+//        Dimension addressMCDim = addressMC.getPreferredSize();
 
-        //Adding created panels to the main panel
-        this.setLayout(new GridLayout(2, 1));
-        this.add(firstPane);
-        this.add(secondPane);
+        //Setting bounds of each component individually
+        MCNameLabel.setBounds(10, 12, MCNameLabelDim.width, MCNameLabelDim.height); //label must be slightly lower to be aligned with text field
+        inputMC.setBounds(205, 10, inputMCDim.width, inputMCDim.height);
+
+        addressLabel.setBounds(10, 52, addressLabelDim.width, addressLabelDim.height);
+        inputAddress.setBounds(205, 50, inputAddressDim.width, inputAddressDim.height);
+
+        submit.setBounds(5, 100, submitDim.width, submitDim.height);
+        successMessage.setBounds(10, 140, successMessageDim.width, successMessageDim.height);
+
+        //Adding groups of components to JPanel
+        this.add(MCNameLabel);
+        this.add(inputMC);
+
+        this.add(addressLabel);
+        this.add(inputAddress);
+
+        this.add(submit);
+        this.add(successMessage);
 
     }
-
 
 
 }
