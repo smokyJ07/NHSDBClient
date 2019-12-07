@@ -64,7 +64,7 @@ case "`uname`" in
     ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/NHSDBClient-1.0-SNAPSHOT.jar
+CLASSPATH=$APP_HOME/lib/NHSDBClient-1.0-SNAPSHOT.jar:$APP_HOME/lib/json-20090211.jar
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then
