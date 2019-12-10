@@ -132,27 +132,6 @@ public class MainMenu extends JFrame {
         in.close();
     }
 
-
-//    //method that handles complete layout of components
-//    private void createLayout(JComponent... arg) {
-//        JPanel pane = new JPanel();
-//        GridLayout gl = new GridLayout(5, 2);
-//
-//        pane.setLayout(gl);
-//        pane.add(arg[0]);
-//        pane.add(arg[1]);
-//        pane.add(arg[2]);
-//        pane.add(arg[3]);
-//        pane.add(arg[4]);
-//        pane.add(arg[5]);
-//        pane.add(arg[6]);
-//        pane.add(arg[7]);
-//        pane.add(arg[8]);
-//
-//        this.getContentPane().add(pane);
-//    }
-
-
     private void createLayout() {
 
         JPanel pane = new JPanel();
