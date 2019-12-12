@@ -1,8 +1,10 @@
 package menus;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -20,7 +22,8 @@ public class MainMenu extends JFrame {
     private JLabel message = new JLabel("");
     private JRadioButton adminButton;
     private JRadioButton gpButton;
-    private JLabel logo = new JLabel("INSERT LOGO HERE:");
+    //private JLabel logo = new JLabel("INSERT LOGO HERE:");
+    JLabel logo = new JLabel(new ImageIcon("nhs.png"));
 
     public MainMenu() {
         initMainMenu();
@@ -42,10 +45,10 @@ public class MainMenu extends JFrame {
         passwordLabel = new JLabel("Password:");
 
         //username text field
-        usernameField = new JTextField(15);
+        usernameField = new JTextField(40);
 
         //password field
-        passwordField = new JPasswordField(15);
+        passwordField = new JPasswordField(40);
 
         //initialize radio buttons
         adminButton = new JRadioButton("Log in as admin");
@@ -61,8 +64,8 @@ public class MainMenu extends JFrame {
 
         //creating layout from custom method
         createLayout();
-        //createLayout(usernameLabel, usernameField, passwordLabel, passwordField, adminButton,
-        //    gpButton, loginButton, message, quitButton);
+
+        //Adding image to main window
 
         this.setVisible(true);
     }
@@ -147,9 +150,10 @@ public class MainMenu extends JFrame {
         Dimension passwordFieldDim = passwordField.getPreferredSize();
         Dimension loginButtonDim = loginButton.getPreferredSize();
         Dimension quitButtonDim = quitButton.getPreferredSize();
+        Dimension logoDim = logo.getPreferredSize();
 
         //Setting bounds of each element
-        logo.setBounds(100, 100, 400, 100);
+        logo.setBounds(130, 50, logoDim.width, logoDim.height);
 
         adminButton.setBounds(10, 200, adminButtonDim.width, adminButtonDim.height);
         gpButton.setBounds(10 + adminButtonDim.width + 40, 200, gpButtonDim.width, gpButtonDim.height);
@@ -160,8 +164,8 @@ public class MainMenu extends JFrame {
         passwordLabel.setBounds(10, 282, passwordLabelDim.width, passwordLabelDim.height);
         passwordField.setBounds(10 + passwordLabelDim.width, 280, passwordFieldDim.width + 30, passwordFieldDim.height);
 
-        loginButton.setBounds(5, 320, loginButtonDim.width, loginButtonDim.height);
-        quitButton.setBounds(5 + loginButtonDim.width + 5, 320, quitButtonDim.width, quitButtonDim.height);
+        loginButton.setBounds(205, 320, loginButtonDim.width, loginButtonDim.height);
+        quitButton.setBounds(205 + loginButtonDim.width + 15, 320, quitButtonDim.width, quitButtonDim.height);
 
         pane.add(logo);
         pane.add(adminButton);
@@ -172,6 +176,7 @@ public class MainMenu extends JFrame {
         pane.add(passwordField);
         pane.add(loginButton);
         pane.add(quitButton);
+
 
         this.getContentPane().add(pane);
 
