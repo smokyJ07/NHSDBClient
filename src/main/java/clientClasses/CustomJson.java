@@ -12,6 +12,7 @@ public class CustomJson extends JSONObject {
             this.put("data", data);
         }catch(JSONException e){
             System.out.println("Error during custom json creation");
+            e.printStackTrace();
         }
     }
 }

@@ -1,10 +1,15 @@
 package menus;
 
+import clientClasses.CustomJson;
+import clientClasses.Request;
 import menus.adminActions.GPTab;
 import menus.adminActions.MedicalCentreTab;
 import menus.adminActions.PatientTab;
 import menus.gpActions.addRecord;
 import menus.gpActions.viewRecord;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -13,6 +18,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class GPMenu extends JFrame {
     //private JMenuBar menuBar;
@@ -26,6 +32,7 @@ public class GPMenu extends JFrame {
     private JButton searchButt = new JButton("Search");
     private JLabel welcomeMessage = new JLabel("Welcome back, Joao.");
     private JLabel errorMessage = new JLabel("Please select a patient.");
+    JList<String> patientMatches;
 
     public GPMenu(){
         //initialize frame
@@ -42,25 +49,15 @@ public class GPMenu extends JFrame {
         errorMessage.setForeground(Color.red);
         errorMessage.setVisible(false);
 
-        //Adding a string element to the scrollPanel
-        String[] patNames = {"Rauchhaus, Jonas", "Orsini, Chloe", "Gutierrez, Alejandra"};
-        JList<String> patientMatches = new JList<String>(patNames);
-        patientMatches.setVisible(false);   //invisible until something is searched
-
-        spane.getViewport().setView(patientMatches);
-
         //Adding input action listeners
 
-        //View patient case records button
-        viewButt.addActionListener(new ActionListener() {
+        //Searching for given input surname in our database (for now does not search)
+        searchButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(patientMatches.getSelectedValue() != null) {
-                    JFrame viewRecord = new viewRecord();
-                    dispose();
-                }
-                else{
-                    errorMessage.setVisible(true);
+
+                if(patientName.getText().length() != 0){
+                    executeGetPatientsRequest();
                 }
             }
         });
@@ -76,27 +73,30 @@ public class GPMenu extends JFrame {
                 else{
                     errorMessage.setVisible(true);
                 }
-             }
-        });
-
-        //Searching for given input surname in our database (for now does not search)
-        searchButt.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(patientName.getText().length() != 0){
-                    patientMatches.setVisible(true);
-                }
             }
         });
 
-                        //button to go back to the Main Menu
-                //createMenuBar();
+        //View patient case records button
+        viewButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(patientMatches.getSelectedValue() != null) {
+                    JFrame viewRecord = new viewRecord();
+                    dispose();
+                }
+                else{
+                    errorMessage.setVisible(true);
+                }
+            }
+        });
+        //button to go back to the Main Menu
+        //createMenuBar();
 
-                //create patientList
-                //createPatientList();
+        //create patientList
+        //createPatientList();
 
-                //creates the layout of the main frame
-                createLayout();
+        //creates the layout of the main frame
+        createLayout();
         //createTabbedPane();
 
         this.setVisible(true);
@@ -117,7 +117,43 @@ public class GPMenu extends JFrame {
 //        menuBar.add(general);
 //        this.setJMenuBar(menuBar);
 //    }
+    private void executeGetPatientsRequest(){
+        String name = patientName.getText();
+        Vector<String>patients = new Vector(); //vector holding information about patients
+        JSONObject data = new JSONObject();
+        try {
+            data.put("name", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //creating the request
+        CustomJson instruction = new CustomJson("getPatients", data);
+        String instructionString = instruction.toString();
+        System.out.println("Instruction: " + instructionString);
 
+        //sending request and obtaining the response
+        String response = "";
+        Request get = new Request();
+        try {
+            response = get.makePostRequest(instructionString);
+            System.out.println("response: " + response);
+            JSONObject results = new JSONObject(response);
+            JSONArray result_json_array = (JSONArray) results.get("data");
+
+            //loop through resulting array and extract patient info
+            for(int i = 0, size=result_json_array.length(); i<size; i++){
+                JSONObject patient = (JSONObject) result_json_array.get(i);
+                String patientInfo = "ID: " + patient.getInt("id") + ", " + "Name: " + patient.getString("name") +
+                        ", " + "DOB: " + patient.getString("dob");
+                patients.add(patientInfo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        patientMatches = new JList<>(patients);
+        patientMatches.setVisible(true);
+        spane.getViewport().setView(patientMatches);
+    }
     //Edited to work with absolute layout instead
     private void createLayout(){
         JPanel pane = new JPanel();

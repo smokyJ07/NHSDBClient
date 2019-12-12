@@ -90,8 +90,7 @@ public class GPTab extends JPanel {
                 medicalCentre = (String)medicalCentreInput.getSelectedItem();
 
                 //Adding input data to Map and resetting the text field
-                gpMap.put("firstName", firstName);
-                gpMap.put("lastName", lastName);
+                gpMap.put("name", firstName + " " + lastName);
                 gpMap.put("pagerNumber", pagerNum);
                 gpMap.put("email", email);
                 GPAdded.addElement(firstNameInput.getText());

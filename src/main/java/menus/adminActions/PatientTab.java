@@ -125,8 +125,7 @@ public class PatientTab extends JPanel {
                 //create instruction json object containing data and function to execute by server
                 JSONObject patient = new JSONObject();
                 try {
-                    patient.put("firstName", patientFirstName);
-                    patient.put("lastName", patientLastName);
+                    patient.put("name", patientFirstName + " " + patientLastName);
                     patient.put("phoneNum", patientNumber);
                     patient.put("address", patientAddress);
                     patient.put("email", patientEmail);

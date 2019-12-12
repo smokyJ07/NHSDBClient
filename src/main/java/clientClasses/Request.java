@@ -12,31 +12,49 @@ public class Request {
 
     }
 
-    public void makeGetRequest() throws Exception{
-        //connect to servlet
-        URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
-        HttpURLConnection conn = (HttpURLConnection) myURL.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "text/html");
-        conn.setRequestProperty("charset", "utf-8");
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(myURL.openStream()));
-        String inputLine;
-        // Read the body of the response
-        while ((inputLine = in.readLine()) != null) {
-            if (inputLine.equals("Hello, World!")){
-                System.out.println("Client successfully connected to server.");
-            }
-        }
-        in.close();
-    }
-
-    public void makePostRequest(String jsonString) {
+    public String makeGetRequest(String jsonString) {
+        String response = "";
         try {
             System.out.println(jsonString);
             // Set up the body data
             byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
             URL myURL = new URL("http://localhost:8080/NHSDBServlet/patients");
+            HttpURLConnection conn = null;
+            conn = (HttpURLConnection) myURL.openConnection();
+            // Set up the header
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "text/html");
+            conn.setRequestProperty("charset", "utf-8");
+            conn.setRequestProperty("Content-Length", Integer.toString(body.length));
+            conn.setDoOutput(true);
+            // Write the body of the request
+            try (OutputStream outputStream = conn.getOutputStream()) {
+                outputStream.write(body, 0, body.length);
+            }
+
+            // Read the body of the response
+            BufferedReader bufferedReader = new BufferedReader(new
+                    InputStreamReader(conn.getInputStream(), "utf-8"));
+            String inputLine;
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                response += inputLine;
+            }
+            bufferedReader.close();
+        }
+        catch (Exception e) {
+            System.out.println("Something went wrong with the connection!");
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public String makePostRequest(String jsonString) {
+        String response = "";
+        try {
+            System.out.println(jsonString);
+            // Set up the body data
+            byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
+            URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
             HttpURLConnection conn = null;
             conn = (HttpURLConnection) myURL.openConnection();
             // Set up the header
@@ -55,7 +73,7 @@ public class Request {
                     InputStreamReader(conn.getInputStream(), "utf-8"));
             String inputLine;
             while ((inputLine = bufferedReader.readLine()) != null) {
-                System.out.println(inputLine);
+                response += inputLine;
             }
             bufferedReader.close();
         }
@@ -63,5 +81,6 @@ public class Request {
             System.out.println("Something went wrong with the connection!");
             e.printStackTrace();
         }
+        return response;
     }
 }

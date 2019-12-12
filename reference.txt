@@ -1,0 +1,121 @@
+This is a reference document to specify the exact format and spelling of the JSONs we are sending back and forth; plus database naming.
+Variable values that are specified by user are showed by the string "..."
+
+JSONs:
+addPatient:
+{"function":"addPatient",
+ "data":{
+    "name":"...",
+    "address":"...",
+    "dob":"...",
+    "phoneNum":"...",
+    "email":"..."
+    }
+}
+
+addDoctor:
+{"function":"addDoctor",
+ "data":{
+    "name":"...",
+    "pagerNumber":"...",
+    "email":"..."
+    }
+}
+
+addMC:
+{"function":"addMC",
+ "data":{
+    "name":"...",
+    "address":"..."
+    }
+}
+
+getPatients (Client -> Server):
+{"function":"getPatients",
+ "data":"... -> in this case the inputted name"
+}
+
+getPatients (Server -> Client):
+{"function":"getPatients",
+ "data":[
+    {
+        "id":"...",
+        "name":"...",
+        "address":"...",
+        "dob":"...",
+        "phoneNum":"...",
+        "email":"..."
+    },
+    {
+        see the above -> same for second patient
+    },
+    {however many ...}
+    ]
+}
+
+addCaseReport (Client -> Server):
+{"function":"addCaseReport,
+ "data":{
+            "casereport":   {
+                            "casenotes":"...",
+                            "chronic_condition":"...",
+                            "patient_id":"..."
+                            }
+            "medication":   {
+                            "starttime":"...",
+                            "endtime":"...",
+                            "type":"...",
+                            }
+        }
+ }
+
+
+DATABASE reference spelling conventions:
+
+create table patients (
+                          id SERIAL PRIMARY KEY,
+                          name varchar(128) NOT NULL,
+                          phonenum varchar(32),
+                          address varchar (128),
+                          dob varchar(128),
+                          email varchar(128)
+);
+
+create table doctors (
+                          id SERIAL PRIMARY KEY,
+                          name varchar(128) NOT NULL,
+                          pagernum varchar(32),
+                          email varchar(128)
+);
+
+create table medicalcentre(
+                            id SERIAL PRIMARY KEY,
+                            name varchar(128),
+                            address varchar(128)
+);
+
+create table patientofdoctor (
+                                 id serial primary key,
+                                 patientid int NOT NULL,
+                                 doctorid int NOT NULL
+);
+
+create table casereports(
+                        id serial primary key,
+                        patientid INT NOT NULL,
+                        doctorid INT NOT NULL,
+                        datetime TIMESTAMP,
+                        casenotes TEXT,
+                        chronic_condition BOOLEAN NOT NULL
+                        );
+
+create table medication(
+                        id serial primary key,
+                        casereportid INT NOT NULL,
+                        starttime TIMESTAMP,
+                        endtime TIMESTAMP,
+                        type varchar(128)
+                        );
+
+
+
