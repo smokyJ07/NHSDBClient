@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class GPMenu extends JFrame {
+public class GPMenu extends ourFrame {
     //private JMenuBar menuBar;
     private JScrollPane spane = new JScrollPane();  //used for patient list display
     //private JLabel message;

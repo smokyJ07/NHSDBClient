@@ -1,8 +1,10 @@
 package menus.gpActions;
 
+import menus.ourFrame;
+
 import javax.swing.*;
 
-public class viewRecord extends JFrame {
+public class viewRecord extends ourFrame {
 
     private JLabel label = new JLabel();
 

@@ -7,8 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminMenu extends JFrame {
-    private JMenuBar menuBar;
+public class AdminMenu extends ourFrame {
     private JTabbedPane tabbedPane;
     private JPanel medicalCentrePanel;
     private JPanel patientPanel;
@@ -20,9 +19,6 @@ public class AdminMenu extends JFrame {
         this.setSize(600, 500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        //menu for the admin (only back button now)
-        createMenuBar();
 
         //tabbed pane with all the actions
         createTabbedPane();
@@ -39,23 +35,6 @@ public class AdminMenu extends JFrame {
         panel.setLayout(gl);
         panel.add(arg[0]);
         this.getContentPane().add(panel);
-    }
-
-    private void createMenuBar(){
-        menuBar = new JMenuBar();
-        JMenu general = new JMenu("General");
-        JMenuItem backButton = new JMenuItem("Back to log in");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                MainMenu mainMenu = new MainMenu();
-                dispose();
-            }
-        });
-
-        general.add(backButton);
-        menuBar.add(general);
-        this.setJMenuBar(menuBar);
     }
 
     private void createTabbedPane(){
