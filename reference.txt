@@ -80,6 +80,43 @@ addCaseReport (Client -> Server):
         }
  }
 
+getCaseReports (Client -> Server)
+{"function":"getCaseReports",
+ "data":"..." -> in this case the patient_id
+}
+
+getCaseReports (Server -> Client)
+{"function":"getCaseReports",
+ "data":    [   {"casereport":  {"id":"...",
+                                 "datetime":"...",
+                                 "chronic_condition":"...",
+                                 "casenotes":"..."
+                                 },
+                 "medications":  [  {"type":"...",
+                                     "starttime":"...",
+                                     "endtime":"..."}
+                                    {"type":"...",
+                                    "starttime":"...",
+                                    "endtime":"..."}
+                                 ]
+                },
+                {"casereport":  {"id":"...",
+                                "datetime":"...",
+                                "chronic_condition":"...",
+                                "casenotes":"..."
+                                },
+                "medications":  [  {"type":"...",
+                                    "starttime":"...",
+                                    "endtime":"..."}
+                                   {"type":"...",
+                                   "starttime":"...",
+                                   "endtime":"..."}
+                                ]
+                },
+
+            ]
+}
+
 
 DATABASE reference spelling conventions:
 
