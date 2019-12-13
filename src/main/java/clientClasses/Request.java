@@ -54,6 +54,8 @@ public class Request {
             System.out.println(jsonString);
             // Set up the body data
             byte[] body = jsonString.getBytes(StandardCharsets.UTF_8);
+            //online URL: https://nhsdbservlet.herokuapp.com/patients
+            //local URL:http://localhost:8080/NHSDBServlet/patients
             URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
             HttpURLConnection conn = null;
             conn = (HttpURLConnection) myURL.openConnection();
