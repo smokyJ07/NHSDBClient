@@ -20,7 +20,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class GPMenu extends JFrame {
+public class GPMenu extends ourFrame {
     //private JMenuBar menuBar;
     private JScrollPane spane = new JScrollPane();  //used for patient list display
     //private JLabel message;

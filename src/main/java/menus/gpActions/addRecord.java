@@ -1,22 +1,31 @@
 package menus.gpActions;
 
+import menus.ourFrame;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TimerTask;
 
-public class addRecord extends JFrame {
+public class addRecord extends ourFrame {
     //Labels
     private JLabel dateLabel = new JLabel("Date: ");
     private JLabel timeLabel = new JLabel("Time: ");
     private JLabel recordLabel = new JLabel("Case Record: ");
+    private JLabel day = new JLabel("Day");
+    private JLabel month = new JLabel("Month");
+    private JLabel year = new JLabel("Year");
+    private JLabel hour = new JLabel("Hour");
+    private JLabel minute = new JLabel("Minute");
     //Inputs
-    private JTextField timeInput = new JTextField(30);
+    private JComboBox hourInput;
+    private JComboBox minuteInput;
     private JTextArea recordInput = new JTextArea(8, 45);
     private JRadioButton chronicButt = new JRadioButton("Chronic");
     private JRadioButton tempButt = new JRadioButton("Temporary");
+    private ButtonGroup group = new ButtonGroup();
     private JButton addMedButt = new JButton("Add new medication");
     private JButton submit = new JButton("Submit");
     //ArrayList of added components related to the medicine(s) added
@@ -26,10 +35,12 @@ public class addRecord extends JFrame {
     private ArrayList<ArrayList<JComboBox>> endDates = new ArrayList<ArrayList<JComboBox>>();   //an array list with each entry having a input date 'bundle'
     private ArrayList<JLabel> startLabel = new ArrayList<JLabel>();
     private ArrayList<JLabel> endLabel = new ArrayList<JLabel>();
-    //Date variables
+    //Date and time variables
     private String[] days = new String[31];     //string type used so it can be the input of JCombo boxes
     private String[] months = new String[12];
     private String[] years = new String[24];
+    private String[] hours = new String[24];
+    private String[] minutes = new String[60];
     private ArrayList<JComboBox> recordDate = new ArrayList<JComboBox>();
     //Other important fields
     private JPanel pane = new JPanel();
@@ -39,10 +50,16 @@ public class addRecord extends JFrame {
 
         //initialize frame
         this.setTitle("New case record");
-        this.setSize(600, 700);
+        this.setSize(800, 700);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
+
+        //Initialising button group
+        group.add(chronicButt);
+        chronicButt.setActionCommand("Chronic");
+        group.add(tempButt);
+        tempButt.setActionCommand("Temporary");
 
         //Initialising date variables
         for(int i = 1; i <= 31; i++){
@@ -66,10 +83,32 @@ public class addRecord extends JFrame {
 
         }
 
+        //Initialising time variables
+        for(int i = 0; i<=59; i++){
+
+            //conditional statements to add 0 before single digits
+            if(i<10){
+                if(i<24){
+                    hours[i] = '0' + Integer.toString(i);
+                }
+                minutes[i] = '0' + Integer.toString(i);
+
+            }
+            else{
+                if(i<24) {
+                    hours[i] = Integer.toString(i);
+                }
+                minutes[i] = Integer.toString(i);
+            }
+        }
+        hourInput = new JComboBox(hours);
+        minuteInput = new JComboBox(minutes);
+
         //Creating the main layout of the window in the main panel
         createLayout();
         addingNewMedicine();
         this.getContentPane().add(pane);
+        gettingDataForServer();
     }
 
     //Called if add new medicine button is called
@@ -78,36 +117,49 @@ public class addRecord extends JFrame {
         addMedButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) { //adds new inputs lower and lower
-                //adding new inputs
-                startLabel.add(new JLabel("Start date: "));
-                Dimension startLabelDim = startLabel.get(medicationNumber).getPreferredSize();
-                startLabel.get(medicationNumber).setBounds(30, 370 + medicationNumber*100, startLabelDim.width, startLabelDim.height);
-                startDates.add(addDateInput(30 + startLabelDim.width, 370 + medicationNumber*100));
+                int minPosX;
+                int yPosTrack = (int) (130 * Math.floor(medicationNumber / 2));  //tracks by how much lower the medical inputs should be placed
+                pane.revalidate();
 
-                endLabel.add(new JLabel("End date: "));
-                Dimension endLabelDim = endLabel.get(medicationNumber).getPreferredSize();
-                endLabel.get(medicationNumber).setBounds(30, 400 + medicationNumber*100, endLabelDim.width, endLabelDim.height);
-                endDates.add(addDateInput(30 + endLabelDim.width,400 + medicationNumber*100));
+                if (medicationNumber % 2 == 0) {    //even number of medicationNumber are placed on left
+                    minPosX = 30;
+                } else {       //odd number of medicationNumber are placed on the right
+                    minPosX = 430;
+                }
+                if (medicationNumber < 4) { //only add new inputs if less than 4 medicines have already been added
+                    //adding new inputs
+                    startLabel.add(new JLabel("Start date: "));
+                    Dimension startLabelDim = startLabel.get(medicationNumber).getPreferredSize();
+                    startLabel.get(medicationNumber).setBounds(minPosX, 400 + yPosTrack, startLabelDim.width, startLabelDim.height);
+                    startDates.add(addDateInput(minPosX + startLabelDim.width, 400 + yPosTrack));
 
-                addMedLabel.add(new JLabel("Medication name: "));
-                addMedInput.add(new JTextField());
-                Dimension addMedLabelDim = addMedLabel.get(medicationNumber).getPreferredSize();
-                Dimension addMedInputDim = addMedInput.get(medicationNumber).getPreferredSize();
-                addMedLabel.get(medicationNumber).setBounds(30, 340 + medicationNumber*100, addMedLabelDim.width, addMedLabelDim.height);
-                addMedInput.get(medicationNumber).setBounds(30 + addMedLabelDim.width, 340 + medicationNumber * 100, 100, addMedInputDim.height);
+                    endLabel.add(new JLabel("End date: "));
+                    Dimension endLabelDim = endLabel.get(medicationNumber).getPreferredSize();
+                    endLabel.get(medicationNumber).setBounds(minPosX, 430 + yPosTrack, endLabelDim.width, endLabelDim.height);
+                    endDates.add(addDateInput(minPosX + endLabelDim.width, 430 + yPosTrack));
 
-                Dimension submitDim = submit.getPreferredSize();
-                submit.setBounds(30, 430 + medicationNumber*100 , submitDim.width, submitDim.height);
+                    addMedLabel.add(new JLabel("Medication name: "));
+                    addMedInput.add(new JTextField(25));
+                    Dimension addMedLabelDim = addMedLabel.get(medicationNumber).getPreferredSize();
+                    Dimension addMedInputDim = addMedInput.get(medicationNumber).getPreferredSize();
+                    addMedLabel.get(medicationNumber).setBounds(minPosX, 340 + yPosTrack, addMedLabelDim.width, addMedLabelDim.height);
+                    addMedInput.get(medicationNumber).setBounds(minPosX, 370 + yPosTrack, addMedInputDim.width, addMedInputDim.height);
 
-                //adding new inputs to main panel
-                pane.add(startLabel.get(medicationNumber));
-                pane.add(endLabel.get(medicationNumber));
-                pane.add(addMedLabel.get(medicationNumber));
-                pane.add(addMedInput.get(medicationNumber));
-                pane.add(submit);
+                    Dimension submitDim = submit.getPreferredSize();
+                    submit.setBounds(30, 460 + yPosTrack, submitDim.width, submitDim.height);
 
-                medicationNumber = medicationNumber + 1;
+                    //adding new inputs to main panel
+                    pane.add(addMedLabel.get(medicationNumber));
+                    pane.add(addMedInput.get(medicationNumber));
+                    pane.add(startLabel.get(medicationNumber));
+                    pane.add(endLabel.get(medicationNumber));
+                    pane.add(submit);
 
+                    pane.revalidate();  //refreshes panel
+                    pane.repaint();
+                    medicationNumber = medicationNumber + 1;
+
+                }
             }
         });
     }
@@ -120,35 +172,55 @@ public class addRecord extends JFrame {
         //Getting preferred dimensions of JComponents
         Dimension dateLabelDim = dateLabel.getPreferredSize();
         Dimension timeLabelDim = timeLabel.getPreferredSize();
-        Dimension timeInputDim = timeInput.getPreferredSize();
+        Dimension hourInputDim = hourInput.getPreferredSize();
+        Dimension minuteInputDim = minuteInput.getPreferredSize();
         Dimension recordLabelDim = recordLabel.getPreferredSize();
         Dimension recordInputDim = recordInput.getPreferredSize();
         Dimension chronicButtDim = chronicButt.getPreferredSize();
         Dimension tempButtDim = tempButt.getPreferredSize();
         Dimension addMedButtDim = addMedButt.getPreferredSize();
+        Dimension dayDim = day.getPreferredSize();
+        Dimension monthDim = month.getPreferredSize();
+        Dimension yearDim = year.getPreferredSize();
+        Dimension hourDim = hour.getPreferredSize();
+        Dimension minuteDim = minute.getPreferredSize();
 
         //Setting bounds for the layout
         dateLabel.setBounds(30, 50, dateLabelDim.width, dateLabelDim.height);
-        timeLabel.setBounds(30, 80, timeLabelDim.width, timeLabelDim.height);
-        timeInput.setBounds(30 + timeLabelDim.width,76,  timeInputDim.width, timeInputDim.height);
+        timeLabel.setBounds(350, 50, timeLabelDim.width, timeLabelDim.height);
+        hourInput.setBounds(350 + timeLabelDim.width,46,  hourInputDim.width, hourInputDim.height);
+        hour.setBounds(360 + timeLabelDim.width, 20, hourDim.width, hourDim.height);
+        minuteInput.setBounds(350 + timeLabelDim.width + hourInputDim.width, 46, minuteInputDim.width, minuteInputDim.height);
+        minute.setBounds(350 + timeLabelDim.width + 85, 20, minuteDim.width, minuteDim.height);
         recordLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
         recordInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
         chronicButt.setBounds(30, 280, chronicButtDim.width, chronicButtDim.height);
         tempButt.setBounds(30 + chronicButtDim.width, 280, tempButtDim.width, tempButtDim.height);
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
 
+
         //Adding main date input
         addDateInput(30 + dateLabelDim.width, 46);
+        day.setBounds(40 + dateLabelDim.width, 20, dayDim.width, dayDim.height);
+        month.setBounds(40 + dateLabelDim.width + 70, 20, monthDim.width, monthDim.height);
+        year.setBounds(40 + dateLabelDim.width + 160, 20, yearDim.width, yearDim.height);
+
 
         //Adding components to the scrollable JPanel
         pane.add(dateLabel);
         pane.add(timeLabel);
-        pane.add(timeInput);
+        pane.add(hourInput);
+        pane.add(minuteInput);
         pane.add(recordLabel);
         pane.add(recordInput);
         pane.add(chronicButt);
         pane.add(tempButt);
         pane.add(addMedButt);
+        pane.add(day);
+        pane.add(month);
+        pane.add(year);
+        pane.add(minute);
+        pane.add(hour);
 
     }
 
@@ -184,12 +256,33 @@ public class addRecord extends JFrame {
 
     }
 
-    //Used so that new inputs appear if more than one medicine is prescribed
-    private void something (){     //takes in panel to add to and returns distances for boundary setting
-        //Adding the submit button after medication inputs
-        Dimension submitDim = submit.getPreferredSize();
-        submit.setBounds(30, 430, submitDim.width, submitDim.height);
-        pane.add(submit);
+    //Hey guys! Use this function to add all the code to take the inputs to the server
+    private void gettingDataForServer(){
+        //These are the days of the case record
+        //recordDates.get(0).getSelectedItem().toString() = day; recordDates.get(1).getSelectedValue().toString() = month;
+        // recordDates.get(2).getSelectedItem().toString();    ==> strings
+
+        //This is the time:
+        // hour = hourInput.getSelectedItem().toString() and minute = minuteInput.getSelectedItem().toString()
+
+        //This is the case record
+        //case record string = recordInput.getText();       ==> string
+
+        //This is for the disease type
+        //disease type = group.getSelection().getActionCommand();       ==>string
+
+        //Number of medications = medicationNumber  ==>int
+
+        //startDates is an "array of arrays". Each subcomponent is a "date" array
+        //so to get the starting day of the second medication, the command would be startDates.get(1).get(0)
+        // the command to get the year of the third medication is startDates.get(2).get(2), and so on
+        //endDates WORKS IN THE EXACT SAME WAY
+        //these commands return strings
+
+        //Medication names
+        //medication1 = addMedInput.get(0).getText(), medication2 = addMedInput.get(1).getText()
+        //medication3 = addMedInput.get(2).getText(), medication4 = addMedInput.get(3).getText()
+
     }
 
     //If patient accidently added a new medicine,
