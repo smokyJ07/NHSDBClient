@@ -1,6 +1,10 @@
 package menus.gpActions;
 
+import clientClasses.CustomJson;
+import clientClasses.Request;
 import menus.ourFrame;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,8 +49,9 @@ public class addRecord extends ourFrame {
     //Other important fields
     private JPanel pane = new JPanel();
     private int medicationNumber = 0;
+    private int patientID;
 
-    public addRecord(){
+    public addRecord(int patientID_in){
 
         //initialize frame
         this.setTitle("New case record");
@@ -60,6 +65,9 @@ public class addRecord extends ourFrame {
         chronicButt.setActionCommand("Chronic");
         group.add(tempButt);
         tempButt.setActionCommand("Temporary");
+
+        //setting patient id that is currently treated
+        patientID = patientID_in;
 
         //Initialising date variables
         for(int i = 1; i <= 31; i++){
@@ -108,7 +116,14 @@ public class addRecord extends ourFrame {
         createLayout();
         addingNewMedicine();
         this.getContentPane().add(pane);
-        gettingDataForServer();
+
+        //send data to server when submit button clicked
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gettingDataForServer();
+            }
+        });
     }
 
     //Called if add new medicine button is called
@@ -274,15 +289,67 @@ public class addRecord extends ourFrame {
         //Number of medications = medicationNumber  ==>int
 
         //startDates is an "array of arrays". Each subcomponent is a "date" array
-        //so to get the starting day of the second medication, the command would be startDates.get(1).get(0)
-        // the command to get the year of the third medication is startDates.get(2).get(2), and so on
-        //endDates WORKS IN THE EXACT SAME WAY
+        //so to get the starting day of the second medication, the command would be startDates.get(1).get(0).getSelectedValue().toString()
+        // the command to get the year of the third medication is startDates.get(2).get(2).getSelectedValue().toString(), and so on
+        //        //endDates WORKS IN THE EXACT SAME WAY
         //these commands return strings
 
         //Medication names
         //medication1 = addMedInput.get(0).getText(), medication2 = addMedInput.get(1).getText()
         //medication3 = addMedInput.get(2).getText(), medication4 = addMedInput.get(3).getText()
 
+        //getting data for casereport
+        JSONObject casereport = new JSONObject();
+        try {
+            casereport.put("casenotes", recordInput.getText());
+            casereport.put("patient_id", patientID);
+            String choice = group.getSelection().getActionCommand();
+            if (choice.equals("Chronic")){
+                casereport.put("chronic_condition", true);
+            }
+            else{
+                casereport.put("chronic_condition", false);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        //getting data for medications
+        JSONArray medications = new JSONArray();
+        try{
+            for (int i = 0; i<medicationNumber; i++){
+                //SQL timestamp format: '2016-06-22 19:10:25'
+                JSONObject medication = new JSONObject();
+                String startYear = startDates.get(i).get(2).getSelectedItem().toString();
+                String startMonth = startDates.get(i).get(1).getSelectedItem().toString();
+                String startDay = startDates.get(i).get(0).getSelectedItem().toString();
+                String startDate = startYear + "-" + startMonth + "-" + startDay + " 00:00:00";
+                String endYear = endDates.get(i).get(2).getSelectedItem().toString();
+                String endMonth = endDates.get(i).get(1).getSelectedItem().toString();
+                String endDay = endDates.get(i).get(0).getSelectedItem().toString();
+                String endDate = endYear + "-" + endMonth + "-" + endDay + " 00:00:00";
+                String type = addMedInput.get(i).getText();
+                medication.put("starttime", startDate);
+                medication.put("endtime", endDate);
+                medication.put("type", type);
+                medications.put(medication);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        //constructing custom json
+        JSONObject data = new JSONObject();
+        try {
+            data.put("casereport", casereport);
+            data.put("medications", medications);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        CustomJson instruction = new CustomJson("addCaseReport", data);
+        String instruction_string = instruction.toString();
+        Request post = new Request();
+        post.makePostRequest(instruction_string);
     }
 
     //If patient accidently added a new medicine,

@@ -67,7 +67,10 @@ public class GPMenu extends ourFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(patientMatches.getSelectedValue() != null) {
-                    JFrame addRecord = new addRecord();
+                    String patient_info = patientMatches.getSelectedValue();
+                    String id_string = patient_info.split(",")[0];
+                    int id_num = Integer.parseInt(id_string.split(" ")[1]);
+                    JFrame addRecord = new addRecord(id_num);
                     dispose();
                 }
                 else{

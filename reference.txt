@@ -54,18 +54,29 @@ getPatients (Server -> Client):
 }
 
 addCaseReport (Client -> Server):
-{"function":"addCaseReport,
+{"function":"addCaseReport",
  "data":{
             "casereport":   {
-                            "casenotes":"...",
-                            "chronic_condition":"...",
-                            "patient_id":"..."
+                                "casenotes":"...",
+                                "chronic_condition":"...",
+                                "patient_id":"..."
                             }
-            "medication":   {
-                            "starttime":"...",
-                            "endtime":"...",
-                            "type":"...",
-                            }
+            "medications":   [
+                                {
+                                    "starttime":"...",
+                                    "endtime":"...",
+                                    "type":"..."
+                                },
+                                {
+                                    "starttime":"...",
+                                    "endtime":"...",
+                                    "type":"..."
+                                },
+                                {
+                                    add more if necessary
+                                }
+                            ]
+
         }
  }
 
