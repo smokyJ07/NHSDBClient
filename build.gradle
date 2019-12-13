@@ -11,6 +11,9 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    // To include gson - google's json helper libraries (no later than v2.7!)
+    compile group: 'com.google.code.gson', name:'gson', version: '2.7'
+
     // https://mvnrepository.com/artifact/org.mockito/mockito-all
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
