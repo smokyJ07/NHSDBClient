@@ -97,7 +97,8 @@ getCaseReports (Server -> Client)
                                      "endtime":"..."}
                                     {"type":"...",
                                     "starttime":"...",
-                                    "endtime":"..."}
+                                    "endtime":"..."},
+                                    {as many as needed}
                                  ]
                 },
                 {"casereport":  {"id":"...",
@@ -110,9 +111,11 @@ getCaseReports (Server -> Client)
                                     "endtime":"..."}
                                    {"type":"...",
                                    "starttime":"...",
-                                   "endtime":"..."}
+                                   "endtime":"..."},
+                                   {as many as needed}
                                 ]
                 },
+                { as many as needed }
 
             ]
 }

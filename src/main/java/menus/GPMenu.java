@@ -2,22 +2,16 @@ package menus;
 
 import clientClasses.CustomJson;
 import clientClasses.Request;
-import menus.adminActions.GPTab;
-import menus.adminActions.MedicalCentreTab;
-import menus.adminActions.PatientTab;
 import menus.gpActions.addRecord;
-import menus.gpActions.viewRecord;
+import menus.gpActions.viewReport;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class GPMenu extends ourFrame {
@@ -67,10 +61,10 @@ public class GPMenu extends ourFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(patientMatches.getSelectedValue() != null) {
-                    String patient_info = patientMatches.getSelectedValue();
-                    String id_string = patient_info.split(",")[0];
-                    int id_num = Integer.parseInt(id_string.split(" ")[1]);
-                    JFrame addRecord = new addRecord(id_num);
+                    String patientInfo = patientMatches.getSelectedValue();
+                    String idString = patientInfo.split(",")[0];
+                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    JFrame addRecord = new addRecord(idNum);
                     dispose();
                 }
                 else{
@@ -84,7 +78,10 @@ public class GPMenu extends ourFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(patientMatches.getSelectedValue() != null) {
-                    JFrame viewRecord = new viewRecord();
+                    String patientInfo = patientMatches.getSelectedValue();
+                    String idString = patientInfo.split(",")[0];
+                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    JFrame viewRecord = new viewReport(idNum);
                     dispose();
                 }
                 else{
