@@ -1,11 +1,10 @@
 package menus;
 
+import generalClasses.ourFrame;
 import menus.adminActions.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class AdminMenu extends ourFrame {
     private JTabbedPane tabbedPane;

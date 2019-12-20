@@ -1,5 +1,7 @@
-package menus;
+package generalClasses;
 
+
+import menus.MainMenu;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

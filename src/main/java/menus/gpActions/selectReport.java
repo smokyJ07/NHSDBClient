@@ -1,9 +1,7 @@
 package menus.gpActions;
 
-import clientClasses.CustomJson;
 import clientClasses.Request;
-import com.google.gson.Gson;
-import menus.ourFrame;
+import generalClasses.ourFrame;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

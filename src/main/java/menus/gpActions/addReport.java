@@ -2,24 +2,24 @@ package menus.gpActions;
 
 import clientClasses.CustomJson;
 import clientClasses.Request;
-import menus.ourFrame;
+import generalClasses.ourFrame;
+import generalClasses.ourTextField;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TimerTask;
 
 public class addReport extends ourFrame {
     //Labels
-    private JLabel recordLabel = new JLabel("Case Record: ");
+    private JLabel reportLabel = new JLabel("Case Report: ");
     private JLabel titleLabel = new JLabel("Title: ");
     //Inputs
-    private JTextArea recordInput = new JTextArea(8, 61);
-    private JTextField titleInput = new JTextField(58);
+    private JTextArea reportInput = new JTextArea(8, 61);
+    private ourTextField titleInput = new ourTextField(58);
     private JRadioButton chronicButt = new JRadioButton("Chronic");
     private JRadioButton tempButt = new JRadioButton("Temporary");
     private ButtonGroup group = new ButtonGroup();
@@ -44,6 +44,7 @@ public class addReport extends ourFrame {
     private int medicationNumber = 0;
     private int patientID;
     protected JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
+    private JLabel errorsuccessMessage = new JLabel("  ");
 
     public addReport(int patientID_in){
 
@@ -60,8 +61,9 @@ public class addReport extends ourFrame {
         group.add(tempButt);
         tempButt.setActionCommand("Temporary");
 
-        //Setting size of message
+        //Setting size and sorting out messages
         guideMessage.setFont(guideMessage.getFont().deriveFont(18f));
+        //errorsuccessMessage.setVisible(false);
 
         //setting patient id that is currently treated
         patientID = patientID_in;
@@ -157,28 +159,31 @@ public class addReport extends ourFrame {
         //Getting preferred dimensions of JComponents
         Dimension titleInputDim = titleInput.getPreferredSize();
         Dimension titleLabelDim = titleLabel.getPreferredSize();
-        Dimension recordLabelDim = recordLabel.getPreferredSize();
-        Dimension recordInputDim = recordInput.getPreferredSize();
+        Dimension recordLabelDim = reportLabel.getPreferredSize();
+        Dimension recordInputDim = reportInput.getPreferredSize();
         Dimension chronicButtDim = chronicButt.getPreferredSize();
         Dimension tempButtDim = tempButt.getPreferredSize();
         Dimension addMedButtDim = addMedButt.getPreferredSize();
         Dimension guideMessageDim = guideMessage.getPreferredSize();
+        Dimension errorsuccessMessageDim = errorsuccessMessage.getPreferredSize();
 
         //Setting bounds for the layout
         titleInput.setBounds(30 + titleLabelDim.width, 76, titleInputDim.width, titleInputDim.height);
         titleLabel.setBounds(30, 80, titleLabelDim.width, titleLabelDim.height);
-        recordLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
-        recordInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
+        reportLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
+        reportInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
         chronicButt.setBounds(30, 280, chronicButtDim.width, chronicButtDim.height);
         tempButt.setBounds(30 + chronicButtDim.width, 280, tempButtDim.width, tempButtDim.height);
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
         guideMessage.setBounds(30, 20, guideMessageDim.width +220, guideMessageDim.height);
+        errorsuccessMessage.setBounds(30, 620, errorsuccessMessageDim.width + 400, errorsuccessMessageDim.height);
 
         //Adding components to the scrollable JPanel
+        pane.add(errorsuccessMessage);
         pane.add(titleLabel);
         pane.add(titleInput);
-        pane.add(recordLabel);
-        pane.add(recordInput);
+        pane.add(reportLabel);
+        pane.add(reportInput);
         pane.add(chronicButt);
         pane.add(tempButt);
         pane.add(addMedButt);
@@ -248,7 +253,7 @@ public class addReport extends ourFrame {
         //getting data for casereport
         JSONObject casereport = new JSONObject();
         try {
-            casereport.put("casenotes", recordInput.getText());
+            casereport.put("casenotes", reportInput.getText());
             casereport.put("patient_id", patientID);
             String choice = group.getSelection().getActionCommand();
             if (choice.equals("Chronic")){
@@ -301,13 +306,34 @@ public class addReport extends ourFrame {
 
     //send data to server when submit button clicked
     private void submitCall() {
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                gettingDataForServer();
-            }
-        });
+
+        errorsuccessMessage.setVisible(true);
+
+            submit.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+
+                    int check = titleInput.checkInput();
+                    System.out.println(check);
+
+                    if (check == 2) { //If input is correct
+                        //gettingDataForServer();
+                        errorsuccessMessage.setText(titleInput.getMessage());
+                        errorsuccessMessage.setForeground(Color.green);
+                    }
+                    else if (check == 1){
+                        errorsuccessMessage.setText(titleInput.getMessage());
+                        errorsuccessMessage.setForeground(Color.red);
+                    }
+                    else if (check == 0){
+                        errorsuccessMessage.setText(titleInput.getMessage());
+                        errorsuccessMessage.setForeground(Color.red);
+                    }
+
+                }
+            });
     }
+
 
     //If patient accidently added a new medicine,
     private void removeMedication(){

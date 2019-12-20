@@ -2,6 +2,7 @@ package menus;
 
 import clientClasses.CustomJson;
 import clientClasses.Request;
+import generalClasses.ourFrame;
 import menus.gpActions.addReport;
 import menus.gpActions.selectReport;
 import org.json.JSONArray;
