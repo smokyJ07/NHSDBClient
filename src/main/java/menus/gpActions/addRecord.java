@@ -15,18 +15,9 @@ import java.util.TimerTask;
 
 public class addRecord extends ourFrame {
     //Labels
-    private JLabel dateLabel = new JLabel("Date: ");
-    private JLabel timeLabel = new JLabel("Time: ");
     private JLabel recordLabel = new JLabel("Case Record: ");
-    private JLabel day = new JLabel("Day");
-    private JLabel month = new JLabel("Month");
-    private JLabel year = new JLabel("Year");
-    private JLabel hour = new JLabel("Hour");
-    private JLabel minute = new JLabel("Minute");
     //Inputs
-    private JComboBox hourInput;
-    private JComboBox minuteInput;
-    private JTextArea recordInput = new JTextArea(8, 45);
+    private JTextArea recordInput = new JTextArea(8, 61);
     private JRadioButton chronicButt = new JRadioButton("Chronic");
     private JRadioButton tempButt = new JRadioButton("Temporary");
     private ButtonGroup group = new ButtonGroup();
@@ -50,6 +41,7 @@ public class addRecord extends ourFrame {
     private JPanel pane = new JPanel();
     private int medicationNumber = 0;
     private int patientID;
+    private JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
 
     public addRecord(int patientID_in){
 
@@ -65,6 +57,9 @@ public class addRecord extends ourFrame {
         chronicButt.setActionCommand("Chronic");
         group.add(tempButt);
         tempButt.setActionCommand("Temporary");
+
+        //Setting size of message
+        guideMessage.setFont(guideMessage.getFont().deriveFont(18f));
 
         //setting patient id that is currently treated
         patientID = patientID_in;
@@ -90,27 +85,6 @@ public class addRecord extends ourFrame {
             }
 
         }
-
-        //Initialising time variables
-        for(int i = 0; i<=59; i++){
-
-            //conditional statements to add 0 before single digits
-            if(i<10){
-                if(i<24){
-                    hours[i] = '0' + Integer.toString(i);
-                }
-                minutes[i] = '0' + Integer.toString(i);
-
-            }
-            else{
-                if(i<24) {
-                    hours[i] = Integer.toString(i);
-                }
-                minutes[i] = Integer.toString(i);
-            }
-        }
-        hourInput = new JComboBox(hours);
-        minuteInput = new JComboBox(minutes);
 
         //Creating the main layout of the window in the main panel
         createLayout();
@@ -185,57 +159,28 @@ public class addRecord extends ourFrame {
         pane.setLayout(null);
 
         //Getting preferred dimensions of JComponents
-        Dimension dateLabelDim = dateLabel.getPreferredSize();
-        Dimension timeLabelDim = timeLabel.getPreferredSize();
-        Dimension hourInputDim = hourInput.getPreferredSize();
-        Dimension minuteInputDim = minuteInput.getPreferredSize();
         Dimension recordLabelDim = recordLabel.getPreferredSize();
         Dimension recordInputDim = recordInput.getPreferredSize();
         Dimension chronicButtDim = chronicButt.getPreferredSize();
         Dimension tempButtDim = tempButt.getPreferredSize();
         Dimension addMedButtDim = addMedButt.getPreferredSize();
-        Dimension dayDim = day.getPreferredSize();
-        Dimension monthDim = month.getPreferredSize();
-        Dimension yearDim = year.getPreferredSize();
-        Dimension hourDim = hour.getPreferredSize();
-        Dimension minuteDim = minute.getPreferredSize();
+        Dimension guideMessageDim = guideMessage.getPreferredSize();
 
         //Setting bounds for the layout
-        dateLabel.setBounds(30, 50, dateLabelDim.width, dateLabelDim.height);
-        timeLabel.setBounds(350, 50, timeLabelDim.width, timeLabelDim.height);
-        hourInput.setBounds(350 + timeLabelDim.width,46,  hourInputDim.width, hourInputDim.height);
-        hour.setBounds(360 + timeLabelDim.width, 20, hourDim.width, hourDim.height);
-        minuteInput.setBounds(350 + timeLabelDim.width + hourInputDim.width, 46, minuteInputDim.width, minuteInputDim.height);
-        minute.setBounds(350 + timeLabelDim.width + 85, 20, minuteDim.width, minuteDim.height);
         recordLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
         recordInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
         chronicButt.setBounds(30, 280, chronicButtDim.width, chronicButtDim.height);
         tempButt.setBounds(30 + chronicButtDim.width, 280, tempButtDim.width, tempButtDim.height);
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
-
-
-        //Adding main date input
-        addDateInput(30 + dateLabelDim.width, 46);
-        day.setBounds(40 + dateLabelDim.width, 20, dayDim.width, dayDim.height);
-        month.setBounds(40 + dateLabelDim.width + 70, 20, monthDim.width, monthDim.height);
-        year.setBounds(40 + dateLabelDim.width + 160, 20, yearDim.width, yearDim.height);
-
+        guideMessage.setBounds(30, 40, guideMessageDim.width, guideMessageDim.height);
 
         //Adding components to the scrollable JPanel
-        pane.add(dateLabel);
-        pane.add(timeLabel);
-        pane.add(hourInput);
-        pane.add(minuteInput);
         pane.add(recordLabel);
         pane.add(recordInput);
         pane.add(chronicButt);
         pane.add(tempButt);
         pane.add(addMedButt);
-        pane.add(day);
-        pane.add(month);
-        pane.add(year);
-        pane.add(minute);
-        pane.add(hour);
+        pane.add(guideMessage);
 
     }
 

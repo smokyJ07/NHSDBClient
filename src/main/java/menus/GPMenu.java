@@ -16,7 +16,7 @@ import java.util.Vector;
 
 public class GPMenu extends ourFrame {
     //private JMenuBar menuBar;
-    private JScrollPane spane = new JScrollPane();  //used for patient list display
+    private JScrollPane spane;  //used for patient list display
     //private JLabel message;
     private JLabel inputLabel = new JLabel("Patient Name: ");
     private JLabel listLabel = new JLabel("Matches Found: ");
@@ -39,6 +39,12 @@ public class GPMenu extends ourFrame {
         //Setting the font size of the welcome message
         welcomeMessage.setFont(welcomeMessage.getFont().deriveFont(18f));
 
+        //Adding an automatic element just to move onto add record page
+        String[] names = {"Test Patient"};
+        patientMatches = new JList(names);
+        spane = new JScrollPane(patientMatches);
+
+
         //Setting the error message to invisible before error is achieved
         errorMessage.setForeground(Color.red);
         errorMessage.setVisible(false);
@@ -60,10 +66,11 @@ public class GPMenu extends ourFrame {
         addButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(patientMatches.getSelectedValue() != null) {
-                    String patientInfo = patientMatches.getSelectedValue();
-                    String idString = patientInfo.split(",")[0];
-                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                if(spane.getComponentCount() != 0) {
+//                    String patientInfo = patientMatches.getSelectedValue();
+//                    String idString = patientInfo.split(",")[0];
+//                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    int idNum = 3;
                     JFrame addRecord = new addRecord(idNum);
                     dispose();
                 }
@@ -89,11 +96,7 @@ public class GPMenu extends ourFrame {
                 }
             }
         });
-        //button to go back to the Main Menu
-        //createMenuBar();
 
-        //create patientList
-        //createPatientList();
 
         //creates the layout of the main frame
         createLayout();
@@ -101,22 +104,7 @@ public class GPMenu extends ourFrame {
 
         this.setVisible(true);
     }
-//    private void createMenuBar(){
-//        menuBar = new JMenuBar();
-//        JMenu general = new JMenu("General");
-//        JMenuItem backButton = new JMenuItem("Back to log in");
-//        backButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                MainMenu mainMenu = new MainMenu();
-//                dispose();
-//            }
-//        });
-//
-//        general.add(backButton);
-//        menuBar.add(general);
-//        this.setJMenuBar(menuBar);
-//    }
+
     private void executeGetPatientsRequest(){
         String name = patientName.getText();
         Vector<String>patients = new Vector(); //vector holding information about patients
