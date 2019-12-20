@@ -2,8 +2,8 @@ package menus;
 
 import clientClasses.CustomJson;
 import clientClasses.Request;
-import menus.gpActions.addRecord;
-import menus.gpActions.viewReport;
+import menus.gpActions.addReport;
+import menus.gpActions.selectReport;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +22,7 @@ public class GPMenu extends ourFrame {
     private JLabel listLabel = new JLabel("Matches Found: ");
     private JTextField patientName = new JTextField();
     private JButton addButt= new JButton("Add Case Record");        //leads to case record add JFrame
-    private JButton viewButt = new JButton("View Case Records");//leads to case record view JFrame
+    private JButton viewButt = new JButton("View/Edit Case Records");//leads to case record view JFrame
     private JButton searchButt = new JButton("Search");
     private JLabel welcomeMessage = new JLabel("Welcome back, Joao.");
     private JLabel errorMessage = new JLabel("Please select a patient.");
@@ -71,7 +71,7 @@ public class GPMenu extends ourFrame {
 //                    String idString = patientInfo.split(",")[0];
 //                    int idNum = Integer.parseInt(idString.split(" ")[1]);
                     int idNum = 3;
-                    JFrame addRecord = new addRecord(idNum);
+                    JFrame addRecord = new addReport(idNum);
                     dispose();
                 }
                 else{
@@ -84,11 +84,12 @@ public class GPMenu extends ourFrame {
         viewButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(patientMatches.getSelectedValue() != null) {
-                    String patientInfo = patientMatches.getSelectedValue();
-                    String idString = patientInfo.split(",")[0];
-                    int idNum = Integer.parseInt(idString.split(" ")[1]);
-                    JFrame viewRecord = new viewReport(idNum);
+                if(spane.getComponentCount() !=0) {
+//                    String patientInfo = patientMatches.getSelectedValue();
+//                    String idString = patientInfo.split(",")[0];
+//                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    int idNum = 3;  //arbitrary ID for now to simply work on the viewing case record aspect
+                    JFrame viewRecord = new selectReport(idNum);
                     dispose();
                 }
                 else{

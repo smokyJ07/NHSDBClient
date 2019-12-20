@@ -13,16 +13,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TimerTask;
 
-public class addRecord extends ourFrame {
+public class addReport extends ourFrame {
     //Labels
     private JLabel recordLabel = new JLabel("Case Record: ");
+    private JLabel titleLabel = new JLabel("Title: ");
     //Inputs
     private JTextArea recordInput = new JTextArea(8, 61);
+    private JTextField titleInput = new JTextField(58);
     private JRadioButton chronicButt = new JRadioButton("Chronic");
     private JRadioButton tempButt = new JRadioButton("Temporary");
     private ButtonGroup group = new ButtonGroup();
-    private JButton addMedButt = new JButton("Add new medication");
-    private JButton submit = new JButton("Submit");
+    protected JButton addMedButt = new JButton("Add new medication");
+    protected JButton submit = new JButton("Submit");
     //ArrayList of added components related to the medicine(s) added
     private ArrayList<JTextField> addMedInput = new ArrayList<JTextField>();    //contains medication inputs
     private ArrayList<JLabel> addMedLabel = new ArrayList<JLabel>();            //contains medication input labels
@@ -41,9 +43,9 @@ public class addRecord extends ourFrame {
     private JPanel pane = new JPanel();
     private int medicationNumber = 0;
     private int patientID;
-    private JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
+    protected JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
 
-    public addRecord(int patientID_in){
+    public addReport(int patientID_in){
 
         //initialize frame
         this.setTitle("New case record");
@@ -91,13 +93,7 @@ public class addRecord extends ourFrame {
         addingNewMedicine();
         this.getContentPane().add(pane);
 
-        //send data to server when submit button clicked
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                gettingDataForServer();
-            }
-        });
+        submitCall();
     }
 
     //Called if add new medicine button is called
@@ -159,6 +155,8 @@ public class addRecord extends ourFrame {
         pane.setLayout(null);
 
         //Getting preferred dimensions of JComponents
+        Dimension titleInputDim = titleInput.getPreferredSize();
+        Dimension titleLabelDim = titleLabel.getPreferredSize();
         Dimension recordLabelDim = recordLabel.getPreferredSize();
         Dimension recordInputDim = recordInput.getPreferredSize();
         Dimension chronicButtDim = chronicButt.getPreferredSize();
@@ -167,14 +165,18 @@ public class addRecord extends ourFrame {
         Dimension guideMessageDim = guideMessage.getPreferredSize();
 
         //Setting bounds for the layout
+        titleInput.setBounds(30 + titleLabelDim.width, 76, titleInputDim.width, titleInputDim.height);
+        titleLabel.setBounds(30, 80, titleLabelDim.width, titleLabelDim.height);
         recordLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
         recordInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
         chronicButt.setBounds(30, 280, chronicButtDim.width, chronicButtDim.height);
         tempButt.setBounds(30 + chronicButtDim.width, 280, tempButtDim.width, tempButtDim.height);
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
-        guideMessage.setBounds(30, 40, guideMessageDim.width, guideMessageDim.height);
+        guideMessage.setBounds(30, 20, guideMessageDim.width +220, guideMessageDim.height);
 
         //Adding components to the scrollable JPanel
+        pane.add(titleLabel);
+        pane.add(titleInput);
         pane.add(recordLabel);
         pane.add(recordInput);
         pane.add(chronicButt);
@@ -295,6 +297,16 @@ public class addRecord extends ourFrame {
         String instruction_string = instruction.toString();
         Request post = new Request();
         post.makePostRequest(instruction_string);
+    }
+
+    //send data to server when submit button clicked
+    private void submitCall() {
+        submit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                gettingDataForServer();
+            }
+        });
     }
 
     //If patient accidently added a new medicine,
