@@ -6,9 +6,11 @@ package menus.gpActions;
 
 import clientClasses.CustomJson;
 import clientClasses.Request;
+import menus.GPMenu;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +42,7 @@ public class vieweditReport extends addReport {
             super.addMedButt.doClick(); //Ensures that the correct number of medications is automatically displayed by
             //virtually clicking the add medication button
         }
+        extendMenuBar();
 
         initialiseInput();
 
@@ -62,6 +65,18 @@ public class vieweditReport extends addReport {
 
     }
 
+    //adds important things to the MenuBar
+    private void extendMenuBar(){
+        JMenuItem selectPatient = new JMenuItem("Select new patient");
+        selectPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                GPMenu gpMenu = new GPMenu();
+                dispose();
+            }
+        });
+        navigation.add(selectPatient);
+    }
 
     //Here I'm going to take the data variables you guys added to initialise the UI with the values of our case report
     private void initialiseInput(){
