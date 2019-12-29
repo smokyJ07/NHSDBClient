@@ -68,10 +68,11 @@ public class GPMenu extends ourFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(spane.getComponentCount() != 0) {
-//                    String patientInfo = patientMatches.getSelectedValue();
-//                    String idString = patientInfo.split(",")[0];
-//                    int idNum = Integer.parseInt(idString.split(" ")[1]);
-                    int idNum = 3;
+                    String patientInfo = patientMatches.getSelectedValue();
+                    String idString = patientInfo.split(",")[0];
+                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    System.out.println(idNum);
+                    //int idNum = 3;
                     JFrame addRecord = new addReport(idNum);
                     dispose();
                 }
@@ -86,10 +87,10 @@ public class GPMenu extends ourFrame {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(spane.getComponentCount() !=0) {
-//                    String patientInfo = patientMatches.getSelectedValue();
-//                    String idString = patientInfo.split(",")[0];
-//                    int idNum = Integer.parseInt(idString.split(" ")[1]);
-                    int idNum = 3;  //arbitrary ID for now to simply work on the viewing case record aspect
+                    String patientInfo = patientMatches.getSelectedValue();
+                    String idString = patientInfo.split(",")[0];
+                    int idNum = Integer.parseInt(idString.split(" ")[1]);
+                    //int idNum = 3;  //arbitrary ID for now to simply work on the viewing case record aspect
                     JFrame viewRecord = new selectReport(idNum);
                     dispose();
                 }
@@ -119,13 +120,13 @@ public class GPMenu extends ourFrame {
         //creating the request
         CustomJson instruction = new CustomJson("getPatients", data);
         String instructionString = instruction.toString();
-        System.out.println("Instruction: " + instructionString);
+        //System.out.println("Instruction: " + instructionString);
 
         //sending request and obtaining the response
         String response = "";
-        Request get = new Request();
+        Request post = new Request();
         try {
-            response = get.makePostRequest(instructionString);
+            response = post.makePostRequest(instructionString);
             System.out.println("response: " + response);
             JSONObject results = new JSONObject(response);
             JSONArray result_json_array = (JSONArray) results.get("data");

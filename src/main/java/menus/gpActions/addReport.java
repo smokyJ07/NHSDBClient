@@ -18,18 +18,18 @@ public class addReport extends ourFrame {
     private JLabel reportLabel = new JLabel("Case Report: ");
     private JLabel titleLabel = new JLabel("Title: ");
     //Inputs
-    private JTextArea reportInput = new JTextArea(8, 61);
-    private ourTextField titleInput = new ourTextField(58);
-    private JRadioButton chronicButt = new JRadioButton("Chronic");
-    private JRadioButton tempButt = new JRadioButton("Temporary");
-    private ButtonGroup group = new ButtonGroup();
+    protected JTextArea reportInput = new JTextArea(8, 61);
+    protected ourTextField titleInput = new ourTextField(58);
+    protected JRadioButton chronicButt = new JRadioButton("Chronic");
+    protected JRadioButton tempButt = new JRadioButton("Temporary");
+    protected ButtonGroup group = new ButtonGroup();
     protected JButton addMedButt = new JButton("Add new medication");
     protected JButton submit = new JButton("Submit");
     //ArrayList of added components related to the medicine(s) added
-    private ArrayList<JTextField> addMedInput = new ArrayList<JTextField>();    //contains medication inputs
+    protected ArrayList<JTextField> addMedInput = new ArrayList<JTextField>();    //contains medication inputs
     private ArrayList<JLabel> addMedLabel = new ArrayList<JLabel>();            //contains medication input labels
-    private ArrayList<ArrayList<JComboBox>> startDates = new ArrayList<ArrayList<JComboBox>>();
-    private ArrayList<ArrayList<JComboBox>> endDates = new ArrayList<ArrayList<JComboBox>>();   //an array list with each entry having a input date 'bundle'
+    protected ArrayList<ArrayList<JComboBox>> startDates = new ArrayList<ArrayList<JComboBox>>();
+    protected ArrayList<ArrayList<JComboBox>> endDates = new ArrayList<ArrayList<JComboBox>>();   //an array list with each entry having a input date 'bundle'
     private ArrayList<JLabel> startLabel = new ArrayList<JLabel>();
     private ArrayList<JLabel> endLabel = new ArrayList<JLabel>();
     //Date and time variables
@@ -44,7 +44,7 @@ public class addReport extends ourFrame {
     private int medicationNumber = 0;
     private int patientID;
     protected JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
-    private JLabel errorsuccessMessage = new JLabel("  ");
+    protected JLabel errorsuccessMessage = new JLabel("  ");
 
     public addReport(int patientID_in){
 
@@ -224,7 +224,7 @@ public class addReport extends ourFrame {
     }
 
     //Hey guys! Use this function to add all the code to take the inputs to the server
-    private void gettingDataForServer(){
+    protected JSONObject gettingDataForServer(){
         //These are the days of the case record
         //recordDates.get(0).getSelectedItem().toString() = day; recordDates.get(1).getSelectedValue().toString() = month;
         // recordDates.get(2).getSelectedItem().toString();    ==> strings
@@ -298,23 +298,23 @@ public class addReport extends ourFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
-        CustomJson instruction = new CustomJson("addCaseReport", data);
-        String instruction_string = instruction.toString();
-        Request post = new Request();
-        post.makePostRequest(instruction_string);
+        return data;
     }
 
     //send data to server when submit button clicked
     private void submitCall() {
-
         errorsuccessMessage.setVisible(true);
 
             submit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-
+                    JSONObject data = gettingDataForServer();
+                    CustomJson instruction = new CustomJson("addCaseReport", data);
+                    String instruction_string = instruction.toString();
+                    Request post = new Request();
+                    post.makePostRequest(instruction_string);
                     int check = titleInput.checkInput();
-                    System.out.println(check);
+                    //System.out.println(check);
 
                     if (check == 2) { //If input is correct
                         //gettingDataForServer();

@@ -56,7 +56,7 @@ public class MainMenu extends JFrame {
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(adminButton);
         buttonGroup.add(gpButton);
-        adminButton.setSelected(true);
+        gpButton.setSelected(true);
 
         //quit button
         quitButton = new JButton("Quit");

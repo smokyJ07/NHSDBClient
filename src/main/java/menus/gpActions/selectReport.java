@@ -24,7 +24,7 @@ public class selectReport extends ourFrame {
     //data
     private int patientID;
     private String response;
-    private Vector<String> caseDatetimes; //this is what is put in the JList for display
+    private Vector<String> caseDatetimes = new Vector(); //this is what is put in the JList for display
     private JSONObject selectedReport;
     private JSONArray selectedMedis; //this is a JSONArray containing the medications for the selected report
     private JSONArray data; //all the rest of the data that was sent from the server
@@ -43,16 +43,14 @@ public class selectReport extends ourFrame {
         //changing guide message font
         guideMessage.setFont(guideMessage.getFont().deriveFont(18f));
 
-        //The following list of dates is not from the database but simply used to test the interface
-        String[] dates = {"12/09/19", "15/07/19","12/01/18"};
+        //make request to get all case reports
+        getCaseReports();
 
         //Adding case report list to scroll panel
         //caseReportList = new JList<String>(caseDatetimes);
-        caseReportList = new JList<String>(dates);
+        caseReportList = new JList<String>(caseDatetimes);
         spane = new JScrollPane(caseReportList);
 
-        //make request to get all case reports
-        getCaseReports();
         createLayout();
 
         viewButton.addActionListener(new ActionListener() {
@@ -60,12 +58,11 @@ public class selectReport extends ourFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 int idx = caseReportList.getSelectedIndex();
                 try {
-//                    selectedReport = (JSONObject) ((JSONObject) data.get(idx)).get("casereport");
-//                    selectedMedis = (JSONArray)((JSONObject) data.get(idx)).get("medications");
+                    selectedReport = (JSONObject) ((JSONObject) data.get(idx)).get("casereport");
+                    selectedMedis = (JSONArray)((JSONObject) data.get(idx)).get("medications");
 //                    //now do with the data within selectedReport and selectedMedis what you like
 //                    //e.g.: print them out so visible, edit them by making textfield editable, etc.
-                    int id = 3;
-                    JFrame viewedit = new vieweditReport(idx);
+                    JFrame viewedit = new vieweditReport(patientID, selectedReport, selectedMedis);
                     dispose();
                 }catch(Exception e){
                     e.printStackTrace();
@@ -77,15 +74,17 @@ public class selectReport extends ourFrame {
     private void getCaseReports(){
         JSONObject instruction = new JSONObject();
         try {
-            instruction.put("function", "getCaseReport");
-            instruction.put("data", patientID);
+            instruction.put("function", "getCaseReports");
+            JSONObject data = new JSONObject();
+            data.put("patient_id", patientID);
+            instruction.put("data", data);
         }catch(Exception e){
             e.printStackTrace();
         }
         String instruction_string = instruction.toString();
         Request post = new Request();
         response = post.makePostRequest(instruction_string);
-        System.out.println(response);
+        System.out.println("response: " + response);
 
         //unpacking the data
         try {
@@ -100,8 +99,6 @@ public class selectReport extends ourFrame {
         }catch(Exception e){
             e.printStackTrace();
         }
-
-        caseReportList = new JList<String>(caseDatetimes);
     }
 
     private void createLayout(){

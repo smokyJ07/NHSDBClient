@@ -80,6 +80,34 @@ addCaseReport (Client -> Server):
         }
  }
 
+changeCaseReport(Client -> Server)
+{"function":"changeCaseReport",
+ "data":{
+            "casereport":   {
+                                "id":"...",
+                                "casenotes":"...",
+                                "chronic_condition":"...",
+                                "patient_id":"..."
+                            }
+            "medications":   [
+                                {
+                                    "starttime":"...",
+                                    "endtime":"...",
+                                    "type":"..."
+                                },
+                                {
+                                    "starttime":"...",
+                                    "endtime":"...",
+                                    "type":"..."
+                                },
+                                {
+                                    add more if necessary
+                                }
+                            ]
+
+        }
+ }
+
 getCaseReports (Client -> Server)
 {"function":"getCaseReports",
  "data":"..." -> in this case the patient_id

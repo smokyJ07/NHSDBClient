@@ -19,20 +19,20 @@ public class ourTextField extends JTextField {
         //checking for appropriate characters
         for(int i=0; i<input.length(); i++){
             asciVal = (int)(input.charAt(i));
-            System.out.println(check);
-            System.out.println(input.charAt(i));
+            /*System.out.println(check);
+            System.out.println(input.charAt(i));*/
             if( ((asciVal<65)||(asciVal>90))&&((asciVal<97)||(asciVal>122)) ){// if not a letter
-                System.out.println(check);
+                /*System.out.println(check);
                 System.out.println(asciVal);
-                System.out.println(input.charAt(i));
+                System.out.println(input.charAt(i));*/
                 if(input.charAt(i) != ' '){ //if not a space
                     check = 0;
-                    System.out.println(check);
+                    /*System.out.println(check);
                     System.out.println(asciVal);
-                    System.out.println(input.charAt(i));
+                    System.out.println(input.charAt(i));*/
                 }
             }
-            System.out.println("next");
+            //System.out.println("next");
         }
 
         if(input.length() == 0){    //checking if no input has been given
