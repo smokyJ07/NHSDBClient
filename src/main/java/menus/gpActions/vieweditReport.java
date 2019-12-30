@@ -130,7 +130,6 @@ public class vieweditReport extends addReport {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 JSONObject data = gettingDataForServer();
-
                 //insert casereport ID into data
                 try {
                     JSONObject reportData = data.getJSONObject("casereport");
