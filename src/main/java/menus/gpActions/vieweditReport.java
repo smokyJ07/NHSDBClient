@@ -16,6 +16,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class vieweditReport extends addReport {
+    //gp data
+    private int gpID;
+    private String gpName;
+
     private JSONObject report;
     private JSONArray medications;
 
@@ -27,10 +31,14 @@ public class vieweditReport extends addReport {
     //medication data
     private int medCount;
 
-    public vieweditReport(int patientID, JSONObject report, JSONArray medications){
-        super(patientID);
+    public vieweditReport(int patientID, JSONObject report, JSONArray medications, int gpID, String gpName){
+        super(patientID, gpID, gpName);
         this.report = report;
         this.medications = medications;
+
+        //gp data
+        this.gpID = gpID;
+        this.gpName = gpName;
 
         //Small edits to change the context of the JFrame
         super.submit.setText("Apply Changes");
@@ -71,7 +79,7 @@ public class vieweditReport extends addReport {
         selectReport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                selectReport frame = new selectReport(patientID);
+                selectReport frame = new selectReport(patientID, gpID, gpName);
                 dispose();
             }
         });

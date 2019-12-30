@@ -1,5 +1,9 @@
 package menus;
 
+import clientClasses.CustomJson;
+import clientClasses.Request;
+import org.json.JSONObject;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +28,10 @@ public class MainMenu extends JFrame {
     private JRadioButton gpButton;
     //private JLabel logo = new JLabel("INSERT LOGO HERE:");
     JLabel logo = new JLabel(new ImageIcon("nhs.png"));
+
+    //gp data
+    private int gpID;
+    private String gpName;
 
     public MainMenu() {
         initMainMenu();
@@ -88,7 +96,7 @@ public class MainMenu extends JFrame {
                 AdminMenu adminMenu = new AdminMenu();
                 dispose();
             } else if (res == 2) {
-                GPMenu gpMenu = new GPMenu();
+                GPMenu gpMenu = new GPMenu(gpName, gpID);
                 dispose();
             } else {
                 message.setText("Credentials could not be verified.");
@@ -101,15 +109,31 @@ public class MainMenu extends JFrame {
         private int checkCredentials(String username, String password) {
             String validAdmin = "Jonas";
             String validAdminPassword = "jonas";
-            String validGP = "Joao";
-            String validGPPassword = "joao";
             if (adminButton.isSelected()) {
                 if (username.equals(validAdmin) && password.equals(validAdminPassword)) {
                     return 1;
                 }
             } else if (gpButton.isSelected()) {
-                if (username.equals(validGP) && password.equals(validGPPassword)) {
-                    return 2;
+                //Check whether log in data for gp is in db
+                JSONObject data = new JSONObject();
+                try {
+                    data.put("username", username);
+                    data.put("password", password);
+                    CustomJson instruction = new CustomJson("checkLogIn", data);
+                    String instruction_string = instruction.toString();
+                    Request post = new Request();
+                    String resp = post.makePostRequest(instruction_string);
+                    //unpack response
+                    JSONObject response = new JSONObject(resp);
+                    JSONObject logInData = response.getJSONObject("data");
+                    Boolean result = logInData.getBoolean("login");
+                    if (result){
+                        gpID = logInData.getInt("id");
+                        gpName = logInData.getString("name");
+                        return 2;
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
             }
             return 0;

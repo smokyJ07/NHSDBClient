@@ -33,11 +33,15 @@ public class GPTab extends JPanel {
     private JLabel emailLabel;
     private JLabel pagerNumLabel;
     private JLabel medicalCentreLabel;
+    private JLabel usernameLabel;
+    private JLabel passwordLabel;
     //Inputs
     private JTextField firstNameInput;
     private JTextField lastNameInput;
     private JTextField emailInput;
     private JTextField pagerNumInput;
+    private JTextField usernameInput;
+    private JPasswordField passwordInput;
     private JButton submit = new JButton("Submit");
     private JScrollPane spane = new JScrollPane();
     private JComboBox medicalCentreInput;
@@ -49,6 +53,8 @@ public class GPTab extends JPanel {
     private String email;
     private String pagerNum;
     private String medicalCentre;
+    private String username;
+    private String password;
 
     //Output GP list added
     private DefaultListModel<String> GPAdded = new DefaultListModel<String>();
@@ -71,12 +77,16 @@ public class GPTab extends JPanel {
         emailLabel = new JLabel("Email address:");
         pagerNumLabel = new JLabel("Pager number:");
         medicalCentreLabel = new JLabel("Attending medical centre:");
+        usernameLabel = new JLabel("Create username:");
+        passwordLabel = new JLabel("Create password:");
 
         //Initialising GP_name text field
         firstNameInput = new JTextField(30);
         lastNameInput = new JTextField(30);
         emailInput = new JTextField(30);
         pagerNumInput = new JTextField(30);
+        usernameInput = new JTextField(30);
+        passwordInput = new JPasswordField(30);
 
         //Adding ActionListeners to button
         submit.addActionListener(new ActionListener() {
@@ -88,16 +98,23 @@ public class GPTab extends JPanel {
                 pagerNum = pagerNumInput.getText();
                 email = emailInput.getText();
                 medicalCentre = (String)medicalCentreInput.getSelectedItem();
+                username = usernameInput.getText();
+                char[] password_array = passwordInput.getPassword();
+                password = String.valueOf(password_array); //get value of array into string
 
                 //Adding input data to Map and resetting the text field
                 gpMap.put("name", firstName + " " + lastName);
                 gpMap.put("pagerNumber", pagerNum);
                 gpMap.put("email", email);
+                gpMap.put("username", username);
+                gpMap.put("password", password);
                 GPAdded.addElement(firstNameInput.getText());
                 firstNameInput.setText("");    //Resets textfield so that user knows it's submitted
                 lastNameInput.setText("");
                 pagerNumInput.setText("");
                 emailInput.setText("");
+                usernameInput.setText("");
+                passwordInput.setText("");
 
                 //Setting the success message to visble
                 successMessage.setVisible(true);
@@ -153,6 +170,10 @@ public class GPTab extends JPanel {
        componentArray.add(pagerNumInput);
        componentArray.add(medicalCentreLabel);
        componentArray.add(medicalCentreInput);
+       componentArray.add(usernameLabel);
+       componentArray.add(usernameInput);
+       componentArray.add(passwordLabel);
+       componentArray.add(passwordInput);
 
         //Adding the desired coordinates to be implemented or iterated in the layout
         int xLabel = 10;

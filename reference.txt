@@ -32,7 +32,9 @@ addMC:
 
 getPatients (Client -> Server):
 {"function":"getPatients",
- "data":"... -> in this case the inputted name"
+ "data":    {   "name":"...",
+                "gpID":"...
+            }
 }
 
 getPatients (Server -> Client):
@@ -148,6 +150,20 @@ getCaseReports (Server -> Client)
             ]
 }
 
+checkLogIn (Client -> Server)
+{"function":  "checkLogIn",
+ "data":      {   "username":"...",
+                  "password":"..."
+              }
+}
+
+checkLogIn (Server -> Client)
+{"function":    "checkLogIn",
+ "data":        {   "id":"...",
+                    "login":boolean,
+                    "name":"..."
+                }
+}
 
 DATABASE reference spelling conventions:
 
@@ -164,7 +180,9 @@ create table doctors (
                           id SERIAL PRIMARY KEY,
                           name varchar(128) NOT NULL,
                           pagernum varchar(32),
-                          email varchar(128)
+                          email varchar(128),
+                          username varchar(128) NOT NULL,
+                          password varchar(128) NOT NULL
 );
 
 create table medicalcentre(

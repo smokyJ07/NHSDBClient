@@ -28,8 +28,15 @@ public class GPMenu extends ourFrame {
     private JLabel welcomeMessage = new JLabel("Welcome back, Joao.");
     private JLabel errorMessage = new JLabel("Please select a patient.");
     JList<String> patientMatches;
+    //GP data
+    private int gpID;
+    private String gpName;
 
-    public GPMenu(){
+    public GPMenu(String gpName, int gpID){
+        //set up data
+        this.gpID = gpID;
+        this.gpName = gpName;
+
         //initialize frame
         this.setVisible(true);
         this.setTitle("GP Menu");
@@ -37,8 +44,9 @@ public class GPMenu extends ourFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        //Setting the font size of the welcome message
+        //Setting the font size and contents of the welcome message
         welcomeMessage.setFont(welcomeMessage.getFont().deriveFont(18f));
+        welcomeMessage.setText("Welcome back, " + gpName + ".");
 
         //Adding an automatic element just to move onto add record page
         String[] names = {"Test Patient"};
@@ -73,7 +81,7 @@ public class GPMenu extends ourFrame {
                     int idNum = Integer.parseInt(idString.split(" ")[1]);
                     System.out.println(idNum);
                     //int idNum = 3;
-                    JFrame addRecord = new addReport(idNum);
+                    JFrame addRecord = new addReport(idNum, gpID, gpName);
                     dispose();
                 }
                 else{
@@ -91,7 +99,7 @@ public class GPMenu extends ourFrame {
                     String idString = patientInfo.split(",")[0];
                     int idNum = Integer.parseInt(idString.split(" ")[1]);
                     //int idNum = 3;  //arbitrary ID for now to simply work on the viewing case record aspect
-                    JFrame viewRecord = new selectReport(idNum);
+                    JFrame viewRecord = new selectReport(idNum, gpID, gpName);
                     dispose();
                 }
                 else{

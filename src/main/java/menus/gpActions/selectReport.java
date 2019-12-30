@@ -23,6 +23,8 @@ public class selectReport extends ourFrame {
     private JScrollPane spane;
 
     //data
+    private String gpName;
+    private int gpID;
     private int patientID;
     private String response;
     private Vector<String> caseDatetimes = new Vector(); //this is what is put in the JList for display
@@ -30,7 +32,7 @@ public class selectReport extends ourFrame {
     private JSONArray selectedMedis; //this is a JSONArray containing the medications for the selected report
     private JSONArray data; //all the rest of the data that was sent from the server
 
-    public selectReport(int idNum){
+    public selectReport(int idNum, int gpID, String gpName){
         //initialize frame
         this.setTitle("View case records");
         this.setSize(600, 500);
@@ -38,8 +40,10 @@ public class selectReport extends ourFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
 
-        //store patient id
+        //store data
         patientID = idNum;
+        this.gpID = gpID;
+        this.gpName = gpName;
 
         //changing guide message font
         guideMessage.setFont(guideMessage.getFont().deriveFont(18f));
@@ -64,7 +68,7 @@ public class selectReport extends ourFrame {
                     selectedMedis = (JSONArray)((JSONObject) data.get(idx)).get("medications");
 //                    //now do with the data within selectedReport and selectedMedis what you like
 //                    //e.g.: print them out so visible, edit them by making textfield editable, etc.
-                    JFrame viewedit = new vieweditReport(patientID, selectedReport, selectedMedis);
+                    JFrame viewedit = new vieweditReport(patientID, selectedReport, selectedMedis, gpID, gpName);
                     dispose();
                 }catch(Exception e){
                     e.printStackTrace();
@@ -108,7 +112,7 @@ public class selectReport extends ourFrame {
         selectPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                GPMenu gpMenu = new GPMenu();
+                GPMenu gpMenu = new GPMenu(gpName, gpID);
                 dispose();
             }
         });

@@ -15,6 +15,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class addReport extends ourFrame {
+    //gp data
+    private int gpID;
+    private String gpName;
     //Labels
     private JLabel reportLabel = new JLabel("Case Report: ");
     private JLabel titleLabel = new JLabel("Title: ");
@@ -47,7 +50,10 @@ public class addReport extends ourFrame {
     protected JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
     protected JLabel errorsuccessMessage = new JLabel("  ");
 
-    public addReport(int patientID_in){
+    public addReport(int patientID_in, int gpID, String gpName){
+        //store gp data
+        this.gpID = gpID;
+        this.gpName = gpName;
 
         //initialize frame
         this.setTitle("New case record");
@@ -106,7 +112,7 @@ public class addReport extends ourFrame {
         selectPatient.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                GPMenu gpmenu = new GPMenu();
+                GPMenu gpmenu = new GPMenu(gpName, gpID);
                 dispose();
             }
         });
