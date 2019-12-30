@@ -67,15 +67,15 @@ public class vieweditReport extends addReport {
 
     //adds important things to the MenuBar
     private void extendMenuBar(){
-        JMenuItem selectPatient = new JMenuItem("Select new patient");
-        selectPatient.addActionListener(new ActionListener() {
+        JMenuItem selectReport = new JMenuItem("Select new casereport");
+        selectReport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                GPMenu gpMenu = new GPMenu();
+                selectReport frame = new selectReport(patientID);
                 dispose();
             }
         });
-        navigation.add(selectPatient);
+        navigation.add(selectReport);
     }
 
     //Here I'm going to take the data variables you guys added to initialise the UI with the values of our case report

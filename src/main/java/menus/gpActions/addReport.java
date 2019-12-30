@@ -4,6 +4,7 @@ import clientClasses.CustomJson;
 import clientClasses.Request;
 import generalClasses.ourFrame;
 import generalClasses.ourTextField;
+import menus.GPMenu;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -42,7 +43,7 @@ public class addReport extends ourFrame {
     //Other important fields
     private JPanel pane = new JPanel();
     private int medicationNumber = 0;
-    private int patientID;
+    protected int patientID;
     protected JLabel guideMessage = new JLabel("Please enter the relevant details of today's session.");
     protected JLabel errorsuccessMessage = new JLabel("  ");
 
@@ -91,11 +92,25 @@ public class addReport extends ourFrame {
         }
 
         //Creating the main layout of the window in the main panel
+        extendMenu();
         createLayout();
         addingNewMedicine();
         this.getContentPane().add(pane);
 
         submitCall();
+    }
+
+    //adds menu options to menu bar
+    private void extendMenu(){
+        JMenuItem selectPatient = new JMenuItem("Select new patient");
+        selectPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                GPMenu gpmenu = new GPMenu();
+                dispose();
+            }
+        });
+        navigation.add(selectPatient);
     }
 
     //Called if add new medicine button is called

@@ -2,6 +2,7 @@ package menus.gpActions;
 
 import clientClasses.Request;
 import generalClasses.ourFrame;
+import menus.GPMenu;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -51,6 +52,7 @@ public class selectReport extends ourFrame {
         caseReportList = new JList<String>(caseDatetimes);
         spane = new JScrollPane(caseReportList);
 
+        extendMenu();
         createLayout();
 
         viewButton.addActionListener(new ActionListener() {
@@ -101,6 +103,17 @@ public class selectReport extends ourFrame {
         }
     }
 
+    private void extendMenu(){
+        JMenuItem selectPatient = new JMenuItem("Select new patient");
+        selectPatient.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                GPMenu gpMenu = new GPMenu();
+                dispose();
+            }
+        });
+        navigation.add(selectPatient);
+    }
     private void createLayout(){
 
         JPanel pane = new JPanel();
