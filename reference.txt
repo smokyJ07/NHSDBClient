@@ -1,5 +1,5 @@
 This is a reference document to specify the exact format and spelling of the JSONs we are sending back and forth; plus database naming.
-Variable values that are specified by user are showed by the string "..."
+Variable values that are specified by user are showed by the string "...".
 
 JSONs:
 addPatient (Client -> Server):
@@ -9,7 +9,7 @@ addPatient (Client -> Server):
     "address":"...",
     "dob":"...",
     "phoneNum":"...",
-    "email":"..."
+    "email":"...",
     "gp":"..."
     }
 }
