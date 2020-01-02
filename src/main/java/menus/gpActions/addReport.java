@@ -276,6 +276,7 @@ public class addReport extends ourFrame {
         try {
             casereport.put("casenotes", reportInput.getText());
             casereport.put("patient_id", patientID);
+            casereport.put("doctor_id", gpID);
             String choice = group.getSelection().getActionCommand();
             if (choice.equals("Chronic")){
                 casereport.put("chronic_condition", true);

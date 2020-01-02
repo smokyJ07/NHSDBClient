@@ -83,6 +83,7 @@ public class Request {
             System.out.println("Something went wrong with the connection!");
             e.printStackTrace();
         }
+        System.out.println("Response: " + response);
         return response;
     }
 }

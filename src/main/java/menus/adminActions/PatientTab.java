@@ -57,7 +57,7 @@ public class PatientTab extends JPanel {
     private JTextField addressInput;
     private JButton submit = new JButton("Submit");
     //Adding a success message for once patient is added
-    private JLabel successMessage = new JLabel("Patient added successfully!");
+    private JLabel successMessage = new JLabel("Patient added successfully.");
     //Output GP list added
     private DefaultListModel<String> patientAdded = new DefaultListModel<String>();
     private JScrollPane outspane = new JScrollPane();
@@ -119,9 +119,6 @@ public class PatientTab extends JPanel {
                 emailInput.setText("");
                 dobInput.setText("");
 
-                //setting the success message to visible
-                successMessage.setVisible(true);
-
                 //create instruction json object containing data and function to execute by server
                 JSONObject patient = new JSONObject();
                 try {
@@ -130,6 +127,7 @@ public class PatientTab extends JPanel {
                     patient.put("address", patientAddress);
                     patient.put("email", patientEmail);
                     patient.put("dob", patientDob);
+                    patient.put("gp", GPName);
                 } catch(JSONException e){
                     System.out.println("error during patient json creation");
                 }
@@ -137,7 +135,39 @@ public class PatientTab extends JPanel {
                 CustomJson instruction = new CustomJson("addPatient", patient);
                 String instruction_json_string = instruction.toString();
                 Request post = new Request();
-                post.makePostRequest(instruction_json_string);
+                String resp = post.makePostRequest(instruction_json_string);
+                //unpack response
+                boolean patientIDFound = false;
+                boolean gpIDFound = false;
+                try {
+                    JSONObject response = new JSONObject(resp);
+                    JSONObject data = response.getJSONObject("data");
+                    patientIDFound = data.getBoolean("patientid_found");
+                    gpIDFound = data.getBoolean("gpid_found");
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                //execute response
+                if (patientIDFound && gpIDFound){
+                    successMessage.setText("Patient added successfully.");
+                    successMessage.setForeground(Color.green);
+                    successMessage.setVisible(true);
+                }
+                else if (!patientIDFound && gpIDFound){
+                    successMessage.setText("Error while retrieving the patientID.");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
+                else if(!gpIDFound && patientIDFound){
+                    successMessage.setText("Unable to find GP with the specified name.");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
+                else{
+                    successMessage.setText("An unknown error occured.");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
             }
         });
 

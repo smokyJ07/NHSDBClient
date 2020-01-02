@@ -122,6 +122,7 @@ public class GPMenu extends ourFrame {
         JSONObject data = new JSONObject();
         try {
             data.put("name", name);
+            data.put("gpid", gpID);
         } catch (JSONException e) {
             e.printStackTrace();
         }

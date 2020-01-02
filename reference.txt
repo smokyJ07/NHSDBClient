@@ -2,7 +2,7 @@ This is a reference document to specify the exact format and spelling of the JSO
 Variable values that are specified by user are showed by the string "..."
 
 JSONs:
-addPatient:
+addPatient (Client -> Server):
 {"function":"addPatient",
  "data":{
     "name":"...",
@@ -10,6 +10,14 @@ addPatient:
     "dob":"...",
     "phoneNum":"...",
     "email":"..."
+    "gp":"..."
+    }
+}
+addPatient(Server -> Client):
+{"function":"addPatient",
+ "data":{
+    "gpid_found":boolean,
+    "patientid_found":boolean
     }
 }
 
@@ -33,7 +41,7 @@ addMC:
 getPatients (Client -> Server):
 {"function":"getPatients",
  "data":    {   "name":"...",
-                "gpID":"...
+                "gpid":"..."
             }
 }
 
@@ -61,7 +69,8 @@ addCaseReport (Client -> Server):
             "casereport":   {
                                 "casenotes":"...",
                                 "chronic_condition":"...",
-                                "patient_id":"..."
+                                "patient_id":"...",
+                                "doctor_id":"..."
                             }
             "medications":   [
                                 {
@@ -191,7 +200,7 @@ create table medicalcentre(
                             address varchar(128)
 );
 
-create table patientofdoctor (
+create table patienttodoctor (
                                  id serial primary key,
                                  patientid int NOT NULL,
                                  doctorid int NOT NULL
