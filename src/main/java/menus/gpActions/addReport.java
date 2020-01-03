@@ -330,11 +330,6 @@ public class addReport extends ourFrame {
             submit.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    JSONObject data = gettingDataForServer();
-                    CustomJson instruction = new CustomJson("addCaseReport", data);
-                    String instruction_string = instruction.toString();
-                    Request post = new Request();
-                    post.makePostRequest(instruction_string);
                     int check = titleInput.checkInput();
                     //System.out.println(check);
 
@@ -342,6 +337,14 @@ public class addReport extends ourFrame {
                         //gettingDataForServer();
                         errorsuccessMessage.setText(titleInput.getMessage());
                         errorsuccessMessage.setForeground(Color.green);
+
+                        JSONObject data = gettingDataForServer();
+                        CustomJson instruction = new CustomJson("addCaseReport", data);
+                        String instruction_string = instruction.toString();
+                        Request post = new Request();
+                        post.makePostRequest(instruction_string);
+                        GPMenu gpmenu = new GPMenu(gpName, gpID);
+                        dispose();
                     }
                     else if (check == 1){
                         errorsuccessMessage.setText(titleInput.getMessage());
