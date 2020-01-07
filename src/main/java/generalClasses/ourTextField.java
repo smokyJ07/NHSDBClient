@@ -2,6 +2,11 @@ package generalClasses;
 
 import javax.swing.*;
 
+/*CLASS DESCRIPTION: This class extends from the class JTextField. It is a text field that is
+* customized such that it contains particular methods that enable easy input checking, where
+* only characters and spaces are allowed, providing the program with a measure of error handling.  */
+
+
 public class ourTextField extends JTextField {
 
     private String message = "something's not quite right";
@@ -50,6 +55,7 @@ public class ourTextField extends JTextField {
 
     }
 
+    //Allows access to the error/success message of the current input
     public String getMessage(){
         return message;
 

@@ -194,6 +194,7 @@ public class PatientTab extends JPanel {
 //
 //    }
 
+    //Sets the layout of the elements of this panel using absolute layout
     public void settingAbsLayout(){
         //Adding all different layouts via an absolute layout
         this.setLayout(null);   //size is (600, 500)

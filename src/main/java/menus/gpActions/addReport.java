@@ -14,6 +14,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+
+/*CLASS DESCRIPTION: This class extends from the customized "ourFrame" class. It provides the appropriate container
+ * for allowing a GP to add a case report to our database: allowing the user to input a title
+ * whether the condition is chronic or temporary, write a brief summary of the case and to add the medications
+ * along with their start and end dates */
+
+
 public class addReport extends ourFrame {
     //gp data
     private int gpID;
@@ -119,7 +126,7 @@ public class addReport extends ourFrame {
         navigation.add(selectPatient);
     }
 
-    //Called if add new medicine button is called
+    //Called if add new medicine button is called, adds another medicine input
     private void addingNewMedicine(){
         //'Add medicine' button
         addMedButt.addActionListener(new ActionListener() {

@@ -6,6 +6,9 @@ import menus.adminActions.*;
 import javax.swing.*;
 import java.awt.*;
 
+/*CLASS DESCRIPTION: This class extends from the customized "ourFrame" class. It provides an appropriate container
+* for the different actions an admin can take (adding patients, medical centres and GPs, which can be navigated via different tabs.  */
+
 public class AdminMenu extends ourFrame {
     private JTabbedPane tabbedPane;
     private JPanel medicalCentrePanel;
@@ -28,6 +31,7 @@ public class AdminMenu extends ourFrame {
         this.setVisible(true);
     }
 
+    //Creates the frame layout and adds its one element (one tabbed panel)
     private void createMainLayout(JComponent... arg){
         JPanel panel = new JPanel();
         GridLayout gl = new GridLayout(1, 1);
@@ -36,6 +40,7 @@ public class AdminMenu extends ourFrame {
         this.getContentPane().add(panel);
     }
 
+    //Creates the tabbed panel and adds appropriate elements to each tab
     private void createTabbedPane(){
         tabbedPane = new JTabbedPane();
         //three panes on the tabbed pane for adding either medical centres,

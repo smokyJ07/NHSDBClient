@@ -7,8 +7,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//All JFrames used in the GUI will follow the format of the ourFrame class
-//This will prevent me from having to repeat the same code for every new frame
+
+/*CLASS DESCRIPTION: This class extends from the class JFrame. It is essentially a common JFrame,
+* except it includes our standard menu bar. Since the layout was done without a layout manager,
+* these frames are not resizable, which is ensured through this class. */
+
+
 public class ourFrame extends JFrame {
 
     protected JMenuBar menuBar;
@@ -21,6 +25,7 @@ public class ourFrame extends JFrame {
 
     }
 
+    //Creates the standard menu bar for the frames in our GUI with functional options
     private void createMenuBar(){
         menuBar = new JMenuBar();
         JMenu unison = new JMenu("UnIson");

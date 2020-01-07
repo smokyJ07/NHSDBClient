@@ -12,6 +12,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/*CLASS DESCRIPTION: This class extends from the customized "ourFrame" class. It provides the appropriate container
+ * for a GP to search and select a case report from our database. It allows the user to scroll through
+ * and find the case report based on its date and title */
+
+
 public class selectReport extends ourFrame {
 
     //UI elements
@@ -77,6 +82,7 @@ public class selectReport extends ourFrame {
         });
     }
 
+    //Searches through our database for the case reports available for the patient selected
     private void getCaseReports(){
         JSONObject instruction = new JSONObject();
         try {
@@ -107,6 +113,7 @@ public class selectReport extends ourFrame {
         }
     }
 
+    //extends menu to allow option to return to the main gp menu
     private void extendMenu(){
         JMenuItem selectPatient = new JMenuItem("Select new patient");
         selectPatient.addActionListener(new ActionListener() {
@@ -118,6 +125,8 @@ public class selectReport extends ourFrame {
         });
         navigation.add(selectPatient);
     }
+
+    //Creates the layout of this frame using absolute layout
     private void createLayout(){
 
         JPanel pane = new JPanel();

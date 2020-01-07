@@ -153,6 +153,7 @@ public class GPTab extends JPanel {
 //
 //    }
 
+    //Sets the layout this panel's JComponents using absolute layout
     public void settingAbsLayout(){
         //Adding all different layouts via an absolute layout
         this.setLayout(null);   //size is (600, 500)

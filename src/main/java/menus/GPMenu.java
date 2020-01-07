@@ -15,10 +15,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/*CLASS DESCRIPTION: This class extends from the customized class "ourFrame". It provides the appropriate container
+ * for a GP to select a patient from our database and decide whether they would like to create a new case report or
+ * view/edit a previous one*/
+
 public class GPMenu extends ourFrame {
-    //private JMenuBar menuBar;
     private JScrollPane spane;  //used for patient list display
-    //private JLabel message;
     private JLabel inputLabel = new JLabel("Patient Name: ");
     private JLabel listLabel = new JLabel("Matches Found: ");
     private JTextField patientName = new JTextField();
@@ -116,6 +118,7 @@ public class GPMenu extends ourFrame {
         this.setVisible(true);
     }
 
+    //Searches through database for entered patient name
     private void executeGetPatientsRequest(){
         String name = patientName.getText();
         Vector<String>patients = new Vector(); //vector holding information about patients
@@ -154,7 +157,8 @@ public class GPMenu extends ourFrame {
         patientMatches.setVisible(true);
         spane.getViewport().setView(patientMatches);
     }
-    //Edited to work with absolute layout instead
+
+    //Sets the layout of this frame with absolute layout
     private void createLayout(){
         JPanel pane = new JPanel();
         pane.setLayout(null);

@@ -14,6 +14,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/*CLASS DESCRIPTION: This class is extends from the JFrame class. It is an appropriate container
+* for our user to choose whether they would like to log in as an admin or a GP and
+* enter their credentials, which are verified through our database */
+
+
 public class MainMenu extends JFrame {
     private JLabel usernameLabel;
     private JTextField usernameField;
@@ -26,7 +31,6 @@ public class MainMenu extends JFrame {
     private JLabel message = new JLabel("");
     private JRadioButton adminButton;
     private JRadioButton gpButton;
-    //private JLabel logo = new JLabel("INSERT LOGO HERE:");
     JLabel logo = new JLabel(new ImageIcon("nhs.png"));
 
     //gp data
@@ -105,7 +109,7 @@ public class MainMenu extends JFrame {
             }
         }
 
-        //check the login credentials
+        //checks the login credentials
         private int checkCredentials(String username, String password) {
             String validAdmin = "Jonas";
             String validAdminPassword = "jonas";
@@ -140,6 +144,7 @@ public class MainMenu extends JFrame {
         }
     }
 
+    //Connects client to the server
     public void doGetRequest() throws Exception {
         //connect to servlet
         URL myURL = new URL("https://nhsdbservlet.herokuapp.com/patients");
@@ -159,6 +164,7 @@ public class MainMenu extends JFrame {
         in.close();
     }
 
+    //Layout of the main menu, created using absolute layout
     private void createLayout() {
 
         JPanel pane = new JPanel();
@@ -202,7 +208,9 @@ public class MainMenu extends JFrame {
         pane.add(quitButton);
 
 
+
         this.getContentPane().add(pane);
+        this.setResizable(false);
 
     }
 

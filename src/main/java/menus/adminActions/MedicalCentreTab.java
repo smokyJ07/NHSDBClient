@@ -93,6 +93,7 @@ public class MedicalCentreTab extends JPanel {
 
     }
 
+    //Makes a list of medical centres and adds it to scroll panel
     public void createMCList() {        //Making it so by selecting GP, outputs medical centre of GP
 
         MCList.addListSelectionListener(new ListSelectionListener() {
@@ -106,6 +107,7 @@ public class MedicalCentreTab extends JPanel {
 
     }
 
+    //Sets the layout this panel's JComponents using absolute layout
     public void settingAbsLayout(){
         //Adding all different layouts via an absolute layout
         this.setLayout(null);   //size is (600, 500)

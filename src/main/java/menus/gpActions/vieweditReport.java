@@ -1,7 +1,10 @@
 package menus.gpActions;
 
 
-//This class extends addReport as it has all the same interfaces, but only needs first to be initialised with relevant data
+/*CLASS DESCRIPTION: This class extends the addReport class and essentially includes all the same
+* elements (medication and dates, title, report summary, condition type), and allows the user to edit
+* the information if needed or simply view it*/
+
 
 
 import clientClasses.CustomJson;
@@ -57,7 +60,7 @@ public class vieweditReport extends addReport {
         submitChanges();
     }
 
-    //Here you guys can call the methods to extract the data from the case report so that I can add it to the inputs.
+    //Extracts the data from the case report to be added to the inputs.
     private void getCaseReportData(){
         try {
             //report
@@ -86,7 +89,7 @@ public class vieweditReport extends addReport {
         navigation.add(selectReport);
     }
 
-    //Here I'm going to take the data variables you guys added to initialise the UI with the values of our case report
+    //Takes data variables extracted and initialises inputs
     private void initialiseInput(){
         //set report info
         reportInput.setText(casenotes);
@@ -127,6 +130,7 @@ public class vieweditReport extends addReport {
 
     }
 
+    //Allows GP to submit changes made to the report and changes are added to database
     private void submitChanges(){
         errorsuccessMessage.setVisible(true);
 
