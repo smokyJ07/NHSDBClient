@@ -116,15 +116,44 @@ public class GPTab extends JPanel {
                 usernameInput.setText("");
                 passwordInput.setText("");
 
-                //Setting the success message to visble
-                successMessage.setVisible(true);
-
                 //constructing JSON to send to servlet
                 JSONObject data = new JSONObject(gpMap);
                 CustomJson instruction = new CustomJson("addDoctor", data);
                 String instructionString = instruction.toString();
                 Request post = new Request();
-                post.makePostRequest(instructionString);
+                String resp = post.makePostRequest(instructionString);
+                boolean nameExists = false;
+                boolean usernameExists = false;
+                try {
+                    JSONObject response = new JSONObject(resp);
+                    JSONObject responseData = response.getJSONObject("data");
+                    nameExists = responseData.getBoolean("name_exists");
+                    usernameExists = responseData.getBoolean("username_exists");
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+
+                if (!usernameExists && !nameExists) {
+                    //Setting the success message to visble
+                    successMessage.setText("GP successfully added");
+                    successMessage.setForeground(Color.green);
+                    successMessage.setVisible(true);
+                }
+                else if(usernameExists){
+                    successMessage.setText("Username already taken");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
+                else if(nameExists){
+                    successMessage.setText("Name already exists");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
+                else{
+                    successMessage.setText("Unknown error occured");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
             }
         });
 

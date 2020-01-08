@@ -1,5 +1,5 @@
 This is a reference document to specify the exact format and spelling of the JSONs we are sending back and forth; plus database naming.
-Variable values that are specified by user are showed by the string "...".
+Variable values that are specified by user are showed by the string "..."
 
 JSONs:
 addPatient (Client -> Server):
@@ -21,13 +21,22 @@ addPatient(Server -> Client):
     }
 }
 
-addDoctor:
+addDoctor (Client -> Server):
 {"function":"addDoctor",
  "data":{
     "name":"...",
     "pagerNumber":"...",
     "email":"..."
+    "username":"...",
+    "password":"..."
     }
+}
+
+addDoctor (Server -> Client):
+{"function":"addDoctor",
+ "data":{
+    "status":integer
+        }
 }
 
 addMC:
