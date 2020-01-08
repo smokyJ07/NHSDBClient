@@ -35,7 +35,8 @@ addDoctor (Client -> Server):
 addDoctor (Server -> Client):
 {"function":"addDoctor",
  "data":{
-    "status":integer
+    "username_exists":boolean,
+    "name_exists":boolean
         }
 }
 
