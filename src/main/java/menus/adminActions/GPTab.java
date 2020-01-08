@@ -104,7 +104,7 @@ public class GPTab extends JPanel {
 
                 //Adding input data to Map and resetting the text field
                 gpMap.put("name", firstName + " " + lastName);
-                gpMap.put("pagerNumber", pagerNum);
+                gpMap.put("pagerNum", pagerNum);
                 gpMap.put("email", email);
                 gpMap.put("username", username);
                 gpMap.put("password", password);
