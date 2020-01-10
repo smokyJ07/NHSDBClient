@@ -13,6 +13,7 @@ addPatient (Client -> Server):
     "gp":"..."
     }
 }
+
 addPatient(Server -> Client):
 {"function":"addPatient",
  "data":{
@@ -71,6 +72,16 @@ getPatients (Server -> Client):
     },
     {however many ...}
     ]
+}
+
+getDoctor (Client -> Server):
+{"function":"getDoctor",
+ "data":    {"name":"..."}
+}
+
+getDoctor (Server -> Client):
+{"function":"getDoctor",
+ "data":    {"gpid":"..."}
 }
 
 addCaseReport (Client -> Server):

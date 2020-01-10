@@ -139,7 +139,6 @@ public class GPMenu extends ourFrame {
         Request post = new Request();
         try {
             response = post.makePostRequest(instructionString);
-            System.out.println("response: " + response);
             JSONObject results = new JSONObject(response);
             JSONArray result_json_array = (JSONArray) results.get("data");
 
