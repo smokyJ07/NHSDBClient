@@ -73,6 +73,9 @@ public class GPSearchTab extends JPanel {
 //                    dispose();
                     listLabel.setText("Patients of TestGP");      //Here you can add the GPs name once you find it from the database
                     GPSpane.setVisible(false);
+                    viewButt.setVisible(false);
+                    searchButt.setVisible(false);
+                    gpName.setEditable(false);
                     patientSpane.setVisible(true);
 
 
