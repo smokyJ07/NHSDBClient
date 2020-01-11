@@ -46,7 +46,7 @@ public class addReport extends ourFrame {
     //Date and time variables
     private String[] days = new String[31];     //string type used so it can be the input of JCombo boxes
     private String[] months = new String[12];
-    private String[] years = new String[24];
+    private String[] years = new String[31];
     private String[] hours = new String[24];
     private String[] minutes = new String[60];
     private ArrayList<JComboBox> recordDate = new ArrayList<JComboBox>();
@@ -90,17 +90,15 @@ public class addReport extends ourFrame {
                 days[i-1] = '0' + Integer.toString(i);
                 if(i<=12){
                     months[i-1] = '0' + Integer.toString(i);
-                    years[2*(i-1)] = Integer.toString(2021 - 2*(i-1));
-                    years[2*i - 1] = Integer.toString(2020 - 2*i);
                 }
             }
             else{
                 days[i-1] = Integer.toString(i);
                 if(i<=12){
                     months[i-1] = Integer.toString(i);
-                    years[i-1] = Integer.toString(2021 - i);
                 }
             }
+            years[i-1] = Integer.toString(2022 - i);
 
         }
 
