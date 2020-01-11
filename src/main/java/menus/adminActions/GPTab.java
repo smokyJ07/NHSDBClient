@@ -128,30 +128,11 @@ public class GPTab extends JPanel {
             }
         });
 
-        //Adding medical centres to the scroll panel
-        //spane.getViewport().add(medicalCentreList);
-
-        //Adding GP List
-        //GPList = new JList(GPAdded);
-        //createGPList();
-
         //Function that sets absolute-style layout appropriately
         settingAbsLayout();
 
     }
 
-//    public void createGPList() {        //Making it so by selecting GP, outputs medical centre of GP
-//
-//        GPList.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-//                String medicalCentreChosen = gpMap.get(GPList.getSelectedValue());
-//                medicalCentreGP.setText(medicalCentreChosen);    //Outputs medical centre of selected GP
-//            }
-//        });
-//        outspane.getViewport().add(GPList);
-//
-//    }
 
     //Sets the layout this panel's JComponents using absolute layout
     public void settingAbsLayout(){

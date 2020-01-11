@@ -14,6 +14,7 @@ public class AdminMenu extends ourFrame {
     private JPanel medicalCentrePanel;
     private JPanel patientPanel;
     private JPanel gpPanel;
+    private JPanel gpSearchPanel;
 
     public AdminMenu(){
         //initialize frame
@@ -47,10 +48,11 @@ public class AdminMenu extends ourFrame {
         //GPs or patients
         medicalCentrePanel = new MedicalCentreTab();  //Here we can add the new classes that extend from JPanel
         patientPanel = new PatientTab();
-        //gpPanel = new JPanel();   original code
+        gpSearchPanel = new GPSearchTab();
         gpPanel = new GPTab();      //new code
         tabbedPane.addTab("New Medical Centre", medicalCentrePanel);
         tabbedPane.addTab("New Patient", patientPanel);
         tabbedPane.addTab("New GP", gpPanel);
+        tabbedPane.addTab("GP Search", gpSearchPanel);
     }
 }
