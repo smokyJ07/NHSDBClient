@@ -15,29 +15,37 @@ import java.awt.event.ActionListener;
 import java.util.Vector;
 
 public class GPSearchTab extends JPanel {
-    private JScrollPane spane;  //used for patient list display
+    private JScrollPane GPSpane;  //used for GP list display
+    private JScrollPane patientSpane; //used for patient list display
     private JLabel inputLabel = new JLabel("GP Name: ");
-    private JLabel listLabel = new JLabel("Matches Found: ");
+    private JLabel listLabel = new JLabel("GPs Found: ");
     private JTextField gpName = new JTextField();
-    private JButton addButt= new JButton("?");        //leads to case record add JFrame
-    private JButton viewButt = new JButton("?");//leads to case record view JFrame
+    private JButton viewButt = new JButton("View patients");//leads to case record view JFrame
     private JButton searchButt = new JButton("Search");
-    //private JLabel errorMessage = new JLabel("Please select a patient.");
+    private JLabel errorMessage = new JLabel("Please select a GP.");
+    JList<String>GPMatches;
     JList<String> patientMatches;
     //GP data
 
-
     public GPSearchTab(){
 
-        //Adding an automatic element just to move onto add record page
+        //Adding automatic elements just to move onto add record page
         String[] names = {"Test GP"};
-        patientMatches = new JList(names);
-        spane = new JScrollPane(patientMatches);
+        String[] names2 = {"Test Patient"};
+        GPMatches = new JList(names);
+        patientMatches = new JList(names2);
+        GPSpane = new JScrollPane(GPMatches);
+        patientSpane = new JScrollPane(patientMatches);
+
+        patientSpane.setVisible(false); // Making the patient one invisible for now
+
+        /*HERE ADD CODE TO ADD PATIENTS OF THAT GP TO THE PATIENT LIST*/
+
 
 
         //Setting the error message to invisible before error is achieved
-//        errorMessage.setForeground(Color.red);
-//        errorMessage.setVisible(false);
+        errorMessage.setForeground(Color.red);
+        errorMessage.setVisible(false);
 
         //Adding input action listeners
 
@@ -52,42 +60,28 @@ public class GPSearchTab extends JPanel {
 //            }
 //        });
 
-//        //Adding patient case record
-//        addButt.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                if(spane.getComponentCount() != 0) {
-//                    String patientInfo = patientMatches.getSelectedValue();
-//                    String idString = patientInfo.split(",")[0];
-//                    int idNum = Integer.parseInt(idString.split(" ")[1]);
-//                    System.out.println(idNum);
-//                    //int idNum = 3;
-//                    JFrame addRecord = new addReport(idNum, gpID, gpName);
-//                    dispose();
-//                }
-//                else{
-//                    errorMessage.setVisible(true);
-//                }
-//            }
-//        });
-
-//        //View patient case records button
-//        viewButt.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent actionEvent) {
-//                if(spane.getComponentCount() !=0) {
+        //View patients of that GP
+        viewButt.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(GPSpane.getComponentCount() !=0) {
 //                    String patientInfo = patientMatches.getSelectedValue();
 //                    String idString = patientInfo.split(",")[0];
 //                    int idNum = Integer.parseInt(idString.split(" ")[1]);
 //                    //int idNum = 3;  //arbitrary ID for now to simply work on the viewing case record aspect
 //                    JFrame viewRecord = new selectReport(idNum, gpID, gpName);
 //                    dispose();
-//                }
-//                else{
-//                    errorMessage.setVisible(true);
-//                }
-//            }
-//        });
+                    listLabel.setText("Patients of TestGP");      //Here you can add the GPs name once you find it from the database
+                    GPSpane.setVisible(false);
+                    patientSpane.setVisible(true);
+
+
+                }
+                else{
+                    errorMessage.setVisible(true);
+                }
+            }
+        });
 
 
         //creates the layout of the main frame
@@ -144,32 +138,30 @@ public class GPSearchTab extends JPanel {
         //Getting ideal dimensions for elements
         Dimension listLabelDim = listLabel.getPreferredSize();
         Dimension inputLabelDim = inputLabel.getPreferredSize();
-        Dimension spaneDim = spane.getPreferredSize();
+        Dimension GPSpaneDim = GPSpane.getPreferredSize();
         Dimension patientNameDim = gpName.getPreferredSize();
         Dimension viewButtDim = viewButt.getPreferredSize();
-        Dimension addButtDim = addButt.getPreferredSize();
         //Dimension welcomeMessageDim = welcomeMessage.getPreferredSize();
         Dimension searchButtDim = searchButt.getPreferredSize();
         //Dimension errorMessageDim = errorMessage.getPreferredSize();
 
         //Setting bounds
-        listLabel.setBounds(30, 100, listLabelDim.width, listLabelDim.height);
+        listLabel.setBounds(30, 100, listLabelDim.width + 100, listLabelDim.height);
         inputLabel.setBounds(30, 60, inputLabelDim.width, inputLabelDim.height);
-        spane.setBounds(30, 150, 530, 200);
+        GPSpane.setBounds(30, 150, 530, 200);
+        patientSpane.setBounds(30, 150, 530, 200);
         gpName.setBounds(30 + inputLabelDim.width, 56, 530 - inputLabelDim.width - searchButtDim.width, patientNameDim.height);
         viewButt.setBounds(30, 360, viewButtDim.width, viewButtDim.height);
-        addButt.setBounds(220, 360, addButtDim.width, addButtDim.height);
-        //welcomeMessage.setBounds(30, 20, welcomeMessageDim.width, welcomeMessageDim.height);
         searchButt.setBounds(480, 56, searchButtDim.width, searchButtDim.height);
         //errorMessage.setBounds(30, 415, errorMessageDim.width, errorMessageDim.height);
 
         //Adding components to main panel
         this.add(listLabel);
         this.add(inputLabel);
-        this.add(spane);
+        this.add(GPSpane);
+        this.add(patientSpane);
         this.add(gpName);
         this.add(viewButt);
-        this.add(addButt);
         //this.add(welcomeMessage);
         this.add(searchButt);
         //this.add(errorMessage);
