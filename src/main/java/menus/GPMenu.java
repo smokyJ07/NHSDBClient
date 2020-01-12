@@ -20,7 +20,7 @@ import java.util.Vector;
  * view/edit a previous one*/
 
 public class GPMenu extends ourFrame {
-    private JScrollPane spane;  //used for patient list display
+    private JScrollPane spane = new JScrollPane();  //used for patient list display
     private JLabel inputLabel = new JLabel("Patient Name: ");
     private JLabel listLabel = new JLabel("Matches Found: ");
     private JTextField patientName = new JTextField();
@@ -49,12 +49,6 @@ public class GPMenu extends ourFrame {
         //Setting the font size and contents of the welcome message
         welcomeMessage.setFont(welcomeMessage.getFont().deriveFont(18f));
         welcomeMessage.setText("Welcome back, " + gpName + ".");
-
-        //Adding an automatic element just to move onto add record page
-        String[] names = {"Test Patient"};
-        patientMatches = new JList(names);
-        spane = new JScrollPane(patientMatches);
-
 
         //Setting the error message to invisible before error is achieved
         errorMessage.setForeground(Color.red);

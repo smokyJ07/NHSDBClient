@@ -49,14 +49,39 @@ addMC:
     }
 }
 
-getPatients (Client -> Server):
+getAllPatients (Client -> Server): //for all patients of a given gp
+{"function":"getPatients",
+ "data":    {
+                "gpid":"..."
+            }
+}
+
+getAllPatients (Server -> Client): //for all patients of a give gp
+{"function":"getPatients",
+ "data":[
+    {
+        "id":"...",
+        "name":"...",
+        "address":"...",
+        "dob":"...",
+        "phoneNum":"...",
+        "email":"..."
+    },
+    {
+        see the above -> same for second patient
+    },
+    {however many ...}
+    ]
+}
+
+getPatients (Client -> Server): //for specific patient name, returns all patients with the same name
 {"function":"getPatients",
  "data":    {   "name":"...",
                 "gpid":"..."
             }
 }
 
-getPatients (Server -> Client):
+getPatients (Server -> Client): //for specific patient name, returns all patients with the same name
 {"function":"getPatients",
  "data":[
     {
