@@ -65,7 +65,6 @@ public class selectReport extends ourFrame {
         getCaseReports();
 
         //Adding case report list to scroll panel
-        //caseReportList = new JList<String>(caseDatetimes);
         caseReportList = new JList<String>(caseDatetimes);
         spane = new JScrollPane(caseReportList);
 
@@ -87,8 +86,6 @@ public class selectReport extends ourFrame {
                 try {
                     selectedReport = (JSONObject) ((JSONObject) data.get(idx)).get("casereport");
                     selectedMedis = (JSONArray)((JSONObject) data.get(idx)).get("medications");
-//                    //now do with the data within selectedReport and selectedMedis what you like
-//                    //e.g.: print them out so visible, edit them by making textfield editable, etc.
                     JFrame viewedit = new vieweditReport(patientID, selectedReport, selectedMedis, gpID, gpName);
                     dispose();
                 }catch(Exception e){
@@ -143,6 +140,9 @@ public class selectReport extends ourFrame {
 
     //make list of all current medicines taken
     private void getCurrentMedicines(){
+        medicines.clear();
+        startDates.clear();
+        endDates.clear();
         Date date = new Date();
         Timestamp now = new Timestamp(date.getTime());
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

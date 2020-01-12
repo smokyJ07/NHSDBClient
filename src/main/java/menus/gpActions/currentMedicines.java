@@ -14,15 +14,16 @@ public class currentMedicines extends JFrame {
     public currentMedicines(Vector<String> medicines, Vector<String> startDates, Vector<String> endDates){
         //setup window
         this.setSize(600, 250);
+        this.setTitle("Current Medications");
+        this.setVisible(true);
+
         //set the location of the window
-        //https://stackoverflow.com/questions/3480102/java-jframe-setlocationrelativetonull-not-centering-the-window-on-ubuntu-10-0
+        //Source: https://stackoverflow.com/questions/3480102/java-jframe-setlocationrelativetonull-not-centering-the-window-on-ubuntu-10-0
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Point middle = new Point(screenSize.width / 2, screenSize.height / 2);
         Point newLocation = new Point(middle.x + (this.getWidth()/3),
                 middle.y - (this.getHeight() / 2));
         this.setLocation(newLocation);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setVisible(true);
 
         //setup data for display
         Vector<String> medications = new Vector();

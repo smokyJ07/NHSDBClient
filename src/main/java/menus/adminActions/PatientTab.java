@@ -15,17 +15,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//IMPORTANT: Added a list of pseudo medical centres
-
 /*CLASS DESCRIPTION: The class addPatient extends from the JPanel class. It provides the appropriate container
  * for adding a patients to our database: four text fields with labels,
  * a submit button to add the new patient to our database alongside a display section to ensure that the program is working
  * correctly. It includes a CreatePatientList function in order for the display to work properly as well as a setting layout function  */
 
 
-//Once information can be fetched from database, also give medical centre info attached to GP name
-
-//For now, display list shows a concatenation of first and last name and outputs in the JLabel the GP name and phone number
+//Display list shows a concatenation of first and last name and outputs in the JLabel the GP name and phone number
 
 
 public class PatientTab extends JPanel {
@@ -104,95 +100,80 @@ public class PatientTab extends JPanel {
                 patientDob = dobInput.getText();
                 patientEmail = emailInput.getText();
 
-                //Adding input data to Map
-                fullName = (firstNameInput.getText() + " " + lastNameInput.getText());
-                otherInfo  = (phoneNumberInput.getText() + ", " + GPInput.getText());
-                map.put(fullName, otherInfo);
-                patientAdded.addElement(fullName);
-
-                //Resetting the text field
-                firstNameInput.setText("");
-                lastNameInput.setText("");
-                phoneNumberInput.setText("");
-                GPInput.setText("");
-                addressInput.setText("");
-                emailInput.setText("");
-                dobInput.setText("");
-
-                //create instruction json object containing data and function to execute by server
-                JSONObject patient = new JSONObject();
-                try {
-                    patient.put("name", patientFirstName + " " + patientLastName);
-                    patient.put("phoneNum", patientNumber);
-                    patient.put("address", patientAddress);
-                    patient.put("email", patientEmail);
-                    patient.put("dob", patientDob);
-                    patient.put("gp", GPName);
-                } catch(JSONException e){
-                    System.out.println("error during patient json creation");
-                }
-
-                CustomJson instruction = new CustomJson("addPatient", patient);
-                String instruction_json_string = instruction.toString();
-                Request post = new Request();
-                String resp = post.makePostRequest(instruction_json_string);
-                //unpack response
-                boolean patientIDFound = false;
-                boolean gpIDFound = false;
-                try {
-                    JSONObject response = new JSONObject(resp);
-                    JSONObject data = response.getJSONObject("data");
-                    patientIDFound = data.getBoolean("patientid_found");
-                    gpIDFound = data.getBoolean("gpid_found");
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                //execute response
-                if (patientIDFound && gpIDFound){
-                    successMessage.setText("Patient added successfully.");
-                    successMessage.setForeground(Color.green);
-                    successMessage.setVisible(true);
-                }
-                else if (!patientIDFound && gpIDFound){
-                    successMessage.setText("Error while retrieving the patientID.");
+                if(patientFirstName.length()<1 || patientLastName.length()<1 || patientNumber.length()<1 || GPName.length()<1 ||
+                        patientAddress.length()<1 || patientDob.length()<1 || patientEmail.length()<1){
+                    successMessage.setText("Please fill out the form completely.");
                     successMessage.setForeground(Color.red);
                     successMessage.setVisible(true);
                 }
-                else if(!gpIDFound && patientIDFound){
-                    successMessage.setText("Unable to find GP with the specified name.");
-                    successMessage.setForeground(Color.red);
-                    successMessage.setVisible(true);
-                }
-                else{
-                    successMessage.setText("An unknown error occured.");
-                    successMessage.setForeground(Color.red);
-                    successMessage.setVisible(true);
+                else {
+                    //Adding input data to Map
+                    fullName = (firstNameInput.getText() + " " + lastNameInput.getText());
+                    otherInfo = (phoneNumberInput.getText() + ", " + GPInput.getText());
+                    map.put(fullName, otherInfo);
+                    patientAdded.addElement(fullName);
+
+                    //create instruction json object containing data and function to execute by server
+                    JSONObject patient = new JSONObject();
+                    try {
+                        patient.put("name", patientFirstName + " " + patientLastName);
+                        patient.put("phoneNum", patientNumber);
+                        patient.put("address", patientAddress);
+                        patient.put("email", patientEmail);
+                        patient.put("dob", patientDob);
+                        patient.put("gp", GPName);
+                    } catch (JSONException e) {
+                        System.out.println("error during patient json creation");
+                    }
+
+                    CustomJson instruction = new CustomJson("addPatient", patient);
+                    String instruction_json_string = instruction.toString();
+                    Request post = new Request();
+                    String resp = post.makePostRequest(instruction_json_string);
+                    //unpack response
+                    boolean patientIDFound = false;
+                    boolean gpIDFound = false;
+                    try {
+                        JSONObject response = new JSONObject(resp);
+                        JSONObject data = response.getJSONObject("data");
+                        patientIDFound = data.getBoolean("patientid_found");
+                        gpIDFound = data.getBoolean("gpid_found");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    //execute response
+                    if (patientIDFound && gpIDFound) {
+                        successMessage.setText("Patient added successfully.");
+                        successMessage.setForeground(Color.green);
+                        successMessage.setVisible(true);
+
+                        //Resetting the text field
+                        firstNameInput.setText("");
+                        lastNameInput.setText("");
+                        phoneNumberInput.setText("");
+                        GPInput.setText("");
+                        addressInput.setText("");
+                        emailInput.setText("");
+                        dobInput.setText("");
+                    } else if (!patientIDFound && gpIDFound) {
+                        successMessage.setText("Error while retrieving the patientID.");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    } else if (!gpIDFound && patientIDFound) {
+                        successMessage.setText("Unable to find GP with the specified name.");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    } else {
+                        successMessage.setText("An unknown error occured.");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    }
                 }
             }
         });
 
-//        //Adding GP List
-//        patientList = new JList(patientAdded);
-//        createPatientList();
-
-        //Function that sets layout appropriately
         settingAbsLayout();
-
     }
-
-//    public void createPatientList() {        //Making it so by selecting GP, outputs medical centre of GP
-//
-//        patientList.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-//                System.out.println(patientList.getSelectedValue().getClass());
-//                String patientInfo = (String)map.get(patientList.getSelectedValue());
-//                infoPatient.setText(patientInfo);    //Outputs medical centre of selected GP
-//            }
-//        });
-//        outspane.getViewport().add(patientList);
-//
-//    }
 
     //Sets the layout of the elements of this panel using absolute layout
     public void settingAbsLayout(){
@@ -233,22 +214,17 @@ public class PatientTab extends JPanel {
 
            //If a label, put on the left, if text, put on the right, thus different x
             if(i % 2 ==0){  //Label
-
                 //setting bounds of component and updating y to move it further down symmetrically
                 yCurrent = yCurrent + 2; //moving it down by 2 points to make it look more symmetrical
                 componentArray.get(i).setBounds(xLabel, yCurrent, d.width, d.height);
-
             }
             else{   //Input
-
                 //setting bounds of component and updating y to move it further down symmetrically
                 componentArray.get(i).setBounds(xInput, yCurrent, d.width, d.height);
-
             }
-
             this.add(componentArray.get(i));
-
         }
+
         //Adding the submit button
         Dimension submitDim = submit.getPreferredSize();
         int submitY = yInit + 40*Math.round(componentArray.size()/2);  //rounding in case it's an odd number
@@ -257,10 +233,7 @@ public class PatientTab extends JPanel {
 
         Dimension successDim = successMessage.getPreferredSize();
         int successY = submitY + 40;
-        successMessage.setBounds(10, successY, successDim.width, successDim.height);
+        successMessage.setBounds(10, successY, 200, successDim.height);
         this.add(successMessage);
-
-
     }
-
 }

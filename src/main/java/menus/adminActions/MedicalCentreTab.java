@@ -62,25 +62,33 @@ public class MedicalCentreTab extends JPanel {
                 //Adding input data to Map and resetting the text field
                 String mcName = inputMC.getText();
                 String mcAddress = inputAddress.getText();
-                mcMap.put("name", mcName);
-                mcMap.put("address", mcAddress);
+                if(mcName.length()<1 || mcAddress.length()<1){
+                    successMessage.setText("Please fill out the form completely.");
+                    successMessage.setForeground(Color.red);
+                    successMessage.setVisible(true);
+                }
+                else {
+                    mcMap.put("name", mcName);
+                    mcMap.put("address", mcAddress);
 
-                MCAdded.addElement(inputMC.getText());
-                inputMC.setText("");    //Resets textfield so that user knows it's submitted
-                inputAddress.setText("");
+                    MCAdded.addElement(inputMC.getText());
+                    inputMC.setText("");    //Resets textfield so that user knows it's submitted
+                    inputAddress.setText("");
 
-                //Setting the success message to be visible after submission!
-                successMessage.setVisible(true);
+                    //Setting the success message to be visible after submission!
+                    successMessage.setText("Successfully added Medical Centre.");
+                    successMessage.setForeground(Color.green);
+                    successMessage.setVisible(true);
 
-                //create JSON and send it
-                JSONObject mc = new JSONObject(mcMap);
-                System.out.println(mc.toString());
+                    //create JSON and send it
+                    JSONObject mc = new JSONObject(mcMap);
+                    System.out.println(mc.toString());
 
-                CustomJson instruction = new CustomJson("addMC", mc);
-                String instructionString = instruction.toString();
-                Request post = new Request();
-                post.makePostRequest(instructionString);
-
+                    CustomJson instruction = new CustomJson("addMC", mc);
+                    String instructionString = instruction.toString();
+                    Request post = new Request();
+                    post.makePostRequest(instructionString);
+                }
             }
         });
 
@@ -104,7 +112,6 @@ public class MedicalCentreTab extends JPanel {
             }
         });
         outspane.getViewport().add(MCList);
-
     }
 
     //Sets the layout this panel's JComponents using absolute layout
@@ -119,8 +126,6 @@ public class MedicalCentreTab extends JPanel {
         Dimension inputAddressDim = inputAddress.getPreferredSize();
         Dimension submitDim = submit.getPreferredSize();
         Dimension successMessageDim = successMessage.getPreferredSize();
-//        Dimension outspaneDim = outspane.getPreferredSize();
-//        Dimension addressMCDim = addressMC.getPreferredSize();
 
         //Setting bounds of each component individually
         MCNameLabel.setBounds(10, 12, MCNameLabelDim.width, MCNameLabelDim.height); //label must be slightly lower to be aligned with text field
@@ -130,7 +135,7 @@ public class MedicalCentreTab extends JPanel {
         inputAddress.setBounds(205, 50, inputAddressDim.width, inputAddressDim.height);
 
         submit.setBounds(5, 100, submitDim.width, submitDim.height);
-        successMessage.setBounds(10, 140, successMessageDim.width, successMessageDim.height);
+        successMessage.setBounds(10, 140, 200, successMessageDim.height);
 
         //Adding groups of components to JPanel
         this.add(MCNameLabel);

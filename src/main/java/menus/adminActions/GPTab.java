@@ -101,58 +101,63 @@ public class GPTab extends JPanel {
                 username = usernameInput.getText();
                 char[] password_array = passwordInput.getPassword();
                 password = String.valueOf(password_array); //get value of array into string
-
-                //Adding input data to Map and resetting the text field
-                gpMap.put("name", firstName + " " + lastName);
-                gpMap.put("pagerNum", pagerNum);
-                gpMap.put("email", email);
-                gpMap.put("username", username);
-                gpMap.put("password", password);
-                GPAdded.addElement(firstNameInput.getText());
-                firstNameInput.setText("");    //Resets textfield so that user knows it's submitted
-                lastNameInput.setText("");
-                pagerNumInput.setText("");
-                emailInput.setText("");
-                usernameInput.setText("");
-                passwordInput.setText("");
-
-                //constructing JSON to send to servlet
-                JSONObject data = new JSONObject(gpMap);
-                CustomJson instruction = new CustomJson("addDoctor", data);
-                String instructionString = instruction.toString();
-                Request post = new Request();
-                String resp = post.makePostRequest(instructionString);
-                boolean nameExists = false;
-                boolean usernameExists = false;
-                try {
-                    JSONObject response = new JSONObject(resp);
-                    JSONObject responseData = response.getJSONObject("data");
-                    nameExists = responseData.getBoolean("name_exists");
-                    usernameExists = responseData.getBoolean("username_exists");
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-
-                if (!usernameExists && !nameExists) {
-                    //Setting the success message to visble
-                    successMessage.setText("GP successfully added");
-                    successMessage.setForeground(Color.green);
-                    successMessage.setVisible(true);
-                }
-                else if(usernameExists){
-                    successMessage.setText("Username already taken");
+                if(firstName.length()<1 || lastName.length()<1 || pagerNum.length()<1 || email.length()<1 ||
+                        medicalCentre.length()<1 || username.length()<1 || password.length()<1){
+                    successMessage.setText("Please fill out the form completely.");
                     successMessage.setForeground(Color.red);
                     successMessage.setVisible(true);
                 }
-                else if(nameExists){
-                    successMessage.setText("Name already exists");
-                    successMessage.setForeground(Color.red);
-                    successMessage.setVisible(true);
-                }
-                else{
-                    successMessage.setText("Unknown error occured");
-                    successMessage.setForeground(Color.red);
-                    successMessage.setVisible(true);
+                else {
+                    //Adding input data to Map and resetting the text field
+                    gpMap.put("name", firstName + " " + lastName);
+                    gpMap.put("pagerNum", pagerNum);
+                    gpMap.put("email", email);
+                    gpMap.put("username", username);
+                    gpMap.put("password", password);
+                    GPAdded.addElement(firstNameInput.getText());
+
+                    //constructing JSON to send to servlet
+                    JSONObject data = new JSONObject(gpMap);
+                    CustomJson instruction = new CustomJson("addDoctor", data);
+                    String instructionString = instruction.toString();
+                    Request post = new Request();
+                    String resp = post.makePostRequest(instructionString);
+                    boolean nameExists = false;
+                    boolean usernameExists = false;
+                    try {
+                        JSONObject response = new JSONObject(resp);
+                        JSONObject responseData = response.getJSONObject("data");
+                        nameExists = responseData.getBoolean("name_exists");
+                        usernameExists = responseData.getBoolean("username_exists");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (!usernameExists && !nameExists) {
+                        //Setting the success message to visble
+                        successMessage.setText("GP successfully added");
+                        successMessage.setForeground(Color.green);
+                        successMessage.setVisible(true);
+
+                        firstNameInput.setText("");    //Resets textfield so that user knows it's submitted
+                        lastNameInput.setText("");
+                        pagerNumInput.setText("");
+                        emailInput.setText("");
+                        usernameInput.setText("");
+                        passwordInput.setText("");
+                    } else if (usernameExists) {
+                        successMessage.setText("Username already taken");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    } else if (nameExists) {
+                        successMessage.setText("Name already exists");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    } else {
+                        successMessage.setText("Unknown error occured");
+                        successMessage.setForeground(Color.red);
+                        successMessage.setVisible(true);
+                    }
                 }
             }
         });
@@ -179,8 +184,8 @@ public class GPTab extends JPanel {
        componentArray.add(emailInput);
        componentArray.add(pagerNumLabel);
        componentArray.add(pagerNumInput);
-       componentArray.add(medicalCentreLabel);
-       componentArray.add(medicalCentreInput);
+       //componentArray.add(medicalCentreLabel);
+       //componentArray.add(medicalCentreInput);
        componentArray.add(usernameLabel);
        componentArray.add(usernameInput);
        componentArray.add(passwordLabel);
@@ -225,7 +230,7 @@ public class GPTab extends JPanel {
         //Adding success message
         Dimension successDim = successMessage.getPreferredSize();
         int successY = submitY + 40;
-        successMessage.setBounds(10, successY, successDim.width, successDim.height);
+        successMessage.setBounds(10, successY, 200, successDim.height);
         this.add(successMessage);
 
     }

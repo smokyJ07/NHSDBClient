@@ -28,7 +28,7 @@ public class MainMenu extends JFrame {
     private String password;
     private JButton loginButton;
     private JButton quitButton;
-    private JLabel message = new JLabel("");
+    private JLabel message = new JLabel("Credentials couldn't be verified.");
     private JRadioButton adminButton;
     private JRadioButton gpButton;
     JLabel logo = new JLabel(new ImageIcon("nhs.png"));
@@ -74,10 +74,10 @@ public class MainMenu extends JFrame {
         quitButton = new JButton("Quit");
         quitButton.addActionListener((event) -> System.exit(0));
 
+        message.setVisible(false);
+
         //creating layout from custom method
         createLayout();
-
-        //Adding image to main window
 
         this.setVisible(true);
     }
@@ -103,7 +103,7 @@ public class MainMenu extends JFrame {
                 GPMenu gpMenu = new GPMenu(gpName, gpID);
                 dispose();
             } else {
-                message.setText("Credentials could not be verified.");
+                message.setVisible(true);
                 message.setForeground(Color.red);
                 passwordField.setText("");
             }
@@ -181,6 +181,7 @@ public class MainMenu extends JFrame {
         Dimension loginButtonDim = loginButton.getPreferredSize();
         Dimension quitButtonDim = quitButton.getPreferredSize();
         Dimension logoDim = logo.getPreferredSize();
+        Dimension messageDim = message.getPreferredSize();
 
         //Setting bounds of each element
         logo.setBounds(130, 50, logoDim.width, logoDim.height);
@@ -197,6 +198,8 @@ public class MainMenu extends JFrame {
         loginButton.setBounds(205, 320, loginButtonDim.width, loginButtonDim.height);
         quitButton.setBounds(205 + loginButtonDim.width + 15, 320, quitButtonDim.width, quitButtonDim.height);
 
+        message.setBounds(10, 350, messageDim.width, messageDim.height);
+
         pane.add(logo);
         pane.add(adminButton);
         pane.add(gpButton);
@@ -206,12 +209,9 @@ public class MainMenu extends JFrame {
         pane.add(passwordField);
         pane.add(loginButton);
         pane.add(quitButton);
-
-
+        pane.add(message);
 
         this.getContentPane().add(pane);
         this.setResizable(false);
-
     }
-
 }

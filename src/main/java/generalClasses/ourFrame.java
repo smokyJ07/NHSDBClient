@@ -22,7 +22,6 @@ public class ourFrame extends JFrame {
         //Initialises every one of these frame types
         this.setResizable(false);
         createMenuBar();
-
     }
 
     //Creates the standard menu bar for the frames in our GUI with functional options

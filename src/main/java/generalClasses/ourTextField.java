@@ -8,12 +8,9 @@ import javax.swing.*;
 
 
 public class ourTextField extends JTextField {
-
     private String message = "something's not quite right";
-
     public ourTextField(int collumns){
         super(collumns);
-
     }
 
     //returns different value regarding the scenario detected
@@ -52,13 +49,11 @@ public class ourTextField extends JTextField {
             message = "Information submitted successfully!"; //solid effort
             return 2;
         }
-
     }
 
     //Allows access to the error/success message of the current input
     public String getMessage(){
         return message;
-
     }
 
 }

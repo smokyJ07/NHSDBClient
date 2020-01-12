@@ -209,7 +209,7 @@ public class addReport extends ourFrame {
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
         guideMessage.setBounds(30, 20, guideMessageDim.width +220, guideMessageDim.height);
         errorsuccessMessage.setBounds(30, 620, errorsuccessMessageDim.width + 400, errorsuccessMessageDim.height);
-        submit.setBounds(30, 350 , submitDim.width, submitDim.height);
+        submit.setBounds(30, 350 , 150, submitDim.height);
 
         //Adding components to the scrollable JPanel
         pane.add(errorsuccessMessage);
@@ -257,33 +257,7 @@ public class addReport extends ourFrame {
 
     }
 
-    //Hey guys! Use this function to add all the code to take the inputs to the server
     protected JSONObject gettingDataForServer(){
-        //These are the days of the case record
-        //recordDates.get(0).getSelectedItem().toString() = day; recordDates.get(1).getSelectedValue().toString() = month;
-        // recordDates.get(2).getSelectedItem().toString();    ==> strings
-
-        //This is the time:
-        // hour = hourInput.getSelectedItem().toString() and minute = minuteInput.getSelectedItem().toString()
-
-        //This is the case record
-        //case record string = recordInput.getText();       ==> string
-
-        //This is for the disease type
-        //disease type = group.getSelection().getActionCommand();       ==>string
-
-        //Number of medications = medicationNumber  ==>int
-
-        //startDates is an "array of arrays". Each subcomponent is a "date" array
-        //so to get the starting day of the second medication, the command would be startDates.get(1).get(0).getSelectedValue().toString()
-        // the command to get the year of the third medication is startDates.get(2).get(2).getSelectedValue().toString(), and so on
-        //        //endDates WORKS IN THE EXACT SAME WAY
-        //these commands return strings
-
-        //Medication names
-        //medication1 = addMedInput.get(0).getText(), medication2 = addMedInput.get(1).getText()
-        //medication3 = addMedInput.get(2).getText(), medication4 = addMedInput.get(3).getText()
-
         //getting data for casereport
         JSONObject casereport = new JSONObject();
         try {
@@ -346,7 +320,7 @@ public class addReport extends ourFrame {
                     int check = titleInput.checkInput();
                     //System.out.println(check);
 
-                    if (check == 2) { //If input is correct
+                    if (check == 2 && reportInput.getText().length()>0 && !(group.getSelection()==null)) { //If input is correct
                         //gettingDataForServer();
                         errorsuccessMessage.setText(titleInput.getMessage());
                         errorsuccessMessage.setForeground(Color.green);
@@ -367,16 +341,13 @@ public class addReport extends ourFrame {
                         errorsuccessMessage.setText(titleInput.getMessage());
                         errorsuccessMessage.setForeground(Color.red);
                     }
+                    else{
+                        errorsuccessMessage.setText("Please fill in all information before submitting");
+                        errorsuccessMessage.setForeground(Color.red);
+                    }
 
                 }
             });
-    }
-
-
-    //If patient accidently added a new medicine,
-    private void removeMedication(){
-
-
     }
 
 }

@@ -29,7 +29,7 @@ public class GPMenu extends ourFrame {
     private JButton searchButt = new JButton("Search");
     private JLabel welcomeMessage = new JLabel("Welcome back, Joao.");
     private JLabel errorMessage = new JLabel("Please select a patient.");
-    JList<String> patientMatches;
+    JList<String> patientMatches = new JList<>();
     //GP data
     private int gpID;
     private String gpName;
@@ -71,7 +71,7 @@ public class GPMenu extends ourFrame {
         addButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(spane.getComponentCount() != 0) {
+                if(!patientMatches.isSelectionEmpty()) {
                     String patientInfo = patientMatches.getSelectedValue();
                     String idString = patientInfo.split(",")[0];
                     int idNum = Integer.parseInt(idString.split(" ")[1]);
@@ -81,6 +81,7 @@ public class GPMenu extends ourFrame {
                     dispose();
                 }
                 else{
+                    errorMessage.setText("Please select a patient.");
                     errorMessage.setVisible(true);
                 }
             }
@@ -90,7 +91,7 @@ public class GPMenu extends ourFrame {
         viewButt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(spane.getComponentCount() !=0) {
+                if(!patientMatches.isSelectionEmpty()) {
                     String patientInfo = patientMatches.getSelectedValue();
                     String idString = patientInfo.split(",")[0];
                     int idNum = Integer.parseInt(idString.split(" ")[1]);
@@ -99,6 +100,7 @@ public class GPMenu extends ourFrame {
                     dispose();
                 }
                 else{
+                    errorMessage.setText("Please select a patient.");
                     errorMessage.setVisible(true);
                 }
             }
@@ -146,9 +148,15 @@ public class GPMenu extends ourFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        patientMatches = new JList<>(patients);
-        patientMatches.setVisible(true);
-        spane.getViewport().setView(patientMatches);
+        if(patients.size()<1){
+            errorMessage.setVisible(true);
+            errorMessage.setText("No patients were found.");
+        }
+        else {
+            patientMatches = new JList<>(patients);
+            patientMatches.setVisible(true);
+            spane.getViewport().setView(patientMatches);
+        }
     }
 
     //Sets the layout of this frame with absolute layout
@@ -176,7 +184,7 @@ public class GPMenu extends ourFrame {
         addButt.setBounds(220, 380, addButtDim.width, addButtDim.height);
         welcomeMessage.setBounds(30, 20, welcomeMessageDim.width, welcomeMessageDim.height);
         searchButt.setBounds(490, 76, searchButtDim.width, searchButtDim.height);
-        errorMessage.setBounds(30, 415, errorMessageDim.width, errorMessageDim.height);
+        errorMessage.setBounds(30, 415, 200, errorMessageDim.height);
 
         //Adding components to main panel
         pane.add(listLabel);
