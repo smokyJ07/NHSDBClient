@@ -29,6 +29,7 @@ public class addReport extends ourFrame {
     private JLabel reportLabel = new JLabel("Case Report: ");
     private JLabel titleLabel = new JLabel("Title: ");
     //Inputs
+    protected JScrollPane reportInputScroll = new JScrollPane();
     protected JTextArea reportInput = new JTextArea(8, 61);
     protected ourTextField titleInput = new ourTextField(58);
     protected JRadioButton chronicButt = new JRadioButton("Chronic");
@@ -74,6 +75,11 @@ public class addReport extends ourFrame {
         chronicButt.setActionCommand("Chronic");
         group.add(tempButt);
         tempButt.setActionCommand("Temporary");
+
+        //configure textarea
+        reportInput.setLineWrap(true);
+        reportInput.setWrapStyleWord(true);
+        reportInputScroll.getViewport().setView(reportInput);
 
         //Setting size and sorting out messages
         guideMessage.setFont(guideMessage.getFont().deriveFont(18f));
@@ -166,7 +172,6 @@ public class addReport extends ourFrame {
                     pane.add(addMedInput.get(medicationNumber));
                     pane.add(startLabel.get(medicationNumber));
                     pane.add(endLabel.get(medicationNumber));
-                    pane.add(submit);
 
                     pane.revalidate();  //refreshes panel
                     pane.repaint();
@@ -186,34 +191,37 @@ public class addReport extends ourFrame {
         Dimension titleInputDim = titleInput.getPreferredSize();
         Dimension titleLabelDim = titleLabel.getPreferredSize();
         Dimension recordLabelDim = reportLabel.getPreferredSize();
-        Dimension recordInputDim = reportInput.getPreferredSize();
+        Dimension recordInputDim = reportInputScroll.getPreferredSize();
         Dimension chronicButtDim = chronicButt.getPreferredSize();
         Dimension tempButtDim = tempButt.getPreferredSize();
         Dimension addMedButtDim = addMedButt.getPreferredSize();
         Dimension guideMessageDim = guideMessage.getPreferredSize();
         Dimension errorsuccessMessageDim = errorsuccessMessage.getPreferredSize();
+        Dimension submitDim = submit.getPreferredSize();
 
         //Setting bounds for the layout
         titleInput.setBounds(30 + titleLabelDim.width, 76, titleInputDim.width, titleInputDim.height);
         titleLabel.setBounds(30, 80, titleLabelDim.width, titleLabelDim.height);
         reportLabel.setBounds(30, 110, recordLabelDim.width, recordLabelDim.height);
-        reportInput.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
+        reportInputScroll.setBounds(30, 130, recordInputDim.width, recordInputDim.height);
         chronicButt.setBounds(30, 280, chronicButtDim.width, chronicButtDim.height);
         tempButt.setBounds(30 + chronicButtDim.width, 280, tempButtDim.width, tempButtDim.height);
         addMedButt.setBounds(30, 310, addMedButtDim.width, addMedButtDim.height);
         guideMessage.setBounds(30, 20, guideMessageDim.width +220, guideMessageDim.height);
         errorsuccessMessage.setBounds(30, 620, errorsuccessMessageDim.width + 400, errorsuccessMessageDim.height);
+        submit.setBounds(30, 350 , submitDim.width, submitDim.height);
 
         //Adding components to the scrollable JPanel
         pane.add(errorsuccessMessage);
         pane.add(titleLabel);
         pane.add(titleInput);
         pane.add(reportLabel);
-        pane.add(reportInput);
+        pane.add(reportInputScroll);
         pane.add(chronicButt);
         pane.add(tempButt);
         pane.add(addMedButt);
         pane.add(guideMessage);
+        pane.add(submit);
 
     }
 

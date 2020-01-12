@@ -1,5 +1,5 @@
 This is a reference document to specify the exact format and spelling of the JSONs we are sending back and forth; plus database naming.
-Variable values that are specified by user are showed by the string "...".
+Variable values that are specified by user are showed by the string "..."
 
 JSONs:
 addPatient (Client -> Server):
@@ -13,6 +13,7 @@ addPatient (Client -> Server):
     "gp":"..."
     }
 }
+
 addPatient(Server -> Client):
 {"function":"addPatient",
  "data":{
@@ -21,13 +22,23 @@ addPatient(Server -> Client):
     }
 }
 
-addDoctor:
+addDoctor (Client -> Server):
 {"function":"addDoctor",
  "data":{
     "name":"...",
     "pagerNumber":"...",
     "email":"..."
+    "username":"...",
+    "password":"..."
     }
+}
+
+addDoctor (Server -> Client):
+{"function":"addDoctor",
+ "data":{
+    "username_exists":boolean,
+    "name_exists":boolean
+        }
 }
 
 addMC:
@@ -38,14 +49,14 @@ addMC:
     }
 }
 
-getPatients (Client -> Server):
+getAllPatients (Client -> Server): //for all patients of a given gp
 {"function":"getPatients",
- "data":    {   "name":"...",
+ "data":    {
                 "gpid":"..."
             }
 }
 
-getPatients (Server -> Client):
+getAllPatients (Server -> Client): //for all patients of a give gp
 {"function":"getPatients",
  "data":[
     {
@@ -61,6 +72,41 @@ getPatients (Server -> Client):
     },
     {however many ...}
     ]
+}
+
+getPatients (Client -> Server): //for specific patient name, returns all patients with the same name
+{"function":"getPatients",
+ "data":    {   "name":"...",
+                "gpid":"..."
+            }
+}
+
+getPatients (Server -> Client): //for specific patient name, returns all patients with the same name
+{"function":"getPatients",
+ "data":[
+    {
+        "id":"...",
+        "name":"...",
+        "address":"...",
+        "dob":"...",
+        "phoneNum":"...",
+        "email":"..."
+    },
+    {
+        see the above -> same for second patient
+    },
+    {however many ...}
+    ]
+}
+
+getDoctor (Client -> Server):
+{"function":"getDoctor",
+ "data":    {"name":"..."}
+}
+
+getDoctor (Server -> Client):
+{"function":"getDoctor",
+ "data":    {"gpid":"..."}
 }
 
 addCaseReport (Client -> Server):
